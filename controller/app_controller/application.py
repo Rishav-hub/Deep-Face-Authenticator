@@ -1,11 +1,11 @@
 import os
 from typing import List
-from fastapi import APIRouter, Request, File, UploadFile
+from fastapi import APIRouter, Request, File
 from PIL import Image
 import io
 import numpy as np
 
-from starlette.responses import RedirectResponse, JSONResponse, Response
+from starlette.responses import RedirectResponse, JSONResponse
 from starlette import status
 from pydantic import BaseModel
 

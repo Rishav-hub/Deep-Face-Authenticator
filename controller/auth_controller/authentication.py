@@ -5,16 +5,16 @@ from starlette.responses import JSONResponse
 from fastapi import HTTPException, status, APIRouter\
     , Request, Response
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Optional
 # from passlib.context import CryptContext
 from datetime import datetime 
 from datetime import timedelta
 from jose import jwt, JWTError
-from dotenv import dotenv_values
 
-from face_auth.exception import AppException
 from face_auth.entity.user import User
 from face_auth.business_val.user_val import RegisterValidation, LoginValidation
+from face_auth.utils.util import CommonUtils
+from face_auth.constant.auth_constant import SECRET_KEY, ALGORITHM
 
 # bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -54,13 +54,9 @@ async def get_current_user(request: Request):
         _type_: _description_
     """
     try:
-        if os.environ.get('SECRET_KEY') is None or os.environ.get('ALGORITHM') is None:
-            enironment_variable= dotenv_values('.env')
-            secret_key = enironment_variable['SECRET_KEY']
-            algorithm = enironment_variable['ALGORITHM']
-        else:
-            secret_key = os.environ.get('SECRET_KEY')
-            algorithm = os.environ.get('ALGORITHM')
+        secret_key = SECRET_KEY
+        algorithm = ALGORITHM
+
         token=request.cookies.get("access_token")
         if token is None:
             return None
@@ -83,13 +79,8 @@ def create_access_token(uuid: str, username: str,\
                             expires_delta: Optional[timedelta] = None):
     try:
         
-        if os.environ.get('SECRET_KEY') is None and os.environ.get('ALGORITHM') is None:
-            enironment_variable= dotenv_values('.env')
-            secrete_key = enironment_variable['SECRET_KEY']
-            algorithm = enironment_variable['ALGORITHM']
-        else:
-            secrete_key = os.environ.get('SECRET_KEY')
-            algorithm = os.environ.get('ALGORITHM')
+        secret_key = SECRET_KEY
+        algorithm = ALGORITHM
         
         print(uuid, username)
         encode = {"sub": uuid, "username": username}
@@ -99,7 +90,7 @@ def create_access_token(uuid: str, username: str,\
             expire = datetime.utcnow() + timedelta(minutes=15)
         encode.update({"exp": expire})
         # return jwt.encode(encode, Configuration().SECRET_KEY, algorithm=Configuration().ALGORITHM)
-        return jwt.encode(encode,secrete_key, algorithm=algorithm)
+        return jwt.encode(encode,secret_key, algorithm=algorithm)
     except Exception as e:
         raise e
 
