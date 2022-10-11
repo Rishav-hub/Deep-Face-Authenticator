@@ -12,7 +12,8 @@ from face_auth.data_access import user_embedding_data
 from face_auth.entity.user_embedding import Embedding
 from face_auth.data_access.user_embedding_data import UserEmbeddingData
 from face_auth.exception import AppException
-from face_auth.constant.embedding_constants import SIMILARITY_THRESHOLD
+from face_auth.constant.embedding_constants import SIMILARITY_THRESHOLD,\
+        DETECTOR_BACKEND, ENFORCE_DETECTION, EMBEDDING_MODEL_NAME
 
 class UserLoginEmbeddingValidation:
     def __init__(self, uuid_: str) -> None:
@@ -35,10 +36,10 @@ class UserLoginEmbeddingValidation:
         """
         Generate embedding from image array"""
         try:
-            faces = detect_face(img_array, detector_backend = 'mtcnn',\
-                enforce_detection = False)
+            faces = detect_face(img_array, detector_backend = DETECTOR_BACKEND,\
+                enforce_detection = ENFORCE_DETECTION)
             # Generate embedding from face
-            embed = DeepFace.represent(img_path = faces[0], model_name = 'Facenet', enforce_detection = False)
+            embed = DeepFace.represent(img_path = faces[0], model_name = EMBEDDING_MODEL_NAME, enforce_detection = False)
             return embed
         except Exception as e:
             raise AppException(e, sys) from e
