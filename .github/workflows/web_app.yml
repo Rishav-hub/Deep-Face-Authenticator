@@ -35,5 +35,5 @@ jobs:
       - name: Deploy to Azure Web App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "mywebapp"
+          app-name: "faceappdev"
           images: ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
