@@ -28,9 +28,51 @@ class LoginValidation:
         """
         self.email_id = email_id
         self.password = password
+        self.regex= re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+
+    def validate(self) -> bool:
+        """validate: This validates the user input
+
+        Args:
+            email_id (str): email_id of the user
+            password (str): password of the user
+        """
+        try:
+            msg= ""
+            if not self.email_id:
+                msg += "Email Id is required"
+            if not self.password:
+                msg += "Password is required"
+            if not self.isEmailValid():
+                msg += "Invalid Email Id"
+            return msg
+        except Exception as e:
+            raise e
     
+    def isEmailValid(self) -> bool:
+        if re.fullmatch(self.regex, self.email_id):
+            return True
+        else:
+            return False
     def verifyPassword(self, plain_password: str, hashed_password: str) -> bool:
+        """_summary_
+
+        Args:
+            plain_password (str): _description_
+            hashed_password (str): _description_
+
+        Returns:
+            bool: _description_
+        """
         return bcrypt_context.verify(plain_password, hashed_password)
+    
+    def validateLogin(self) -> bool:
+
+        """This checks all the validation conditions for the user registration
+        """
+        if len(self.validate()) != 0:
+            return {"status": False, "msg": self.validate()}
+        return {"status": True}
     
     def authenticateUserLogin(self) -> Optional[str]:
         """_summary_: This authenticates the user and returns the token
@@ -41,36 +83,30 @@ class LoginValidation:
             password (str): _description_
         """
         try:
-            userdata = UserData()
-            user_login_val = userdata.get_user({"email_id": self.email_id})
-            if not user_login_val:
-                return False
-            if not self.verifyPassword(self.password, user_login_val['password']):
-                return False
-            return user_login_val
+            if self.validateLogin()['status']:
+                userdata = UserData()
+                user_login_val = userdata.get_user({"email_id": self.email_id})
+                if not user_login_val:
+                    return False
+                if not self.verifyPassword(self.password, user_login_val['password']):
+                    return False
+                return user_login_val
+            return False
         except Exception as e:
             raise e
     
 
-
-
-
-
-
-
-
 class RegisterValidation:
 
-
+    """_summary_: This authenticates the user and returns the status
+    """
     def __init__(self, user: User) -> None:
         try:
-            print("Inside RegisterValidation")
             self.user = user
             self.regex= re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
             self.uuid = self.user.uuid_ 
             self.userdata = UserData()
             self.bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-            print("Completed RegisterValidation")   
         except Exception as e:
             raise e
 
@@ -113,12 +149,16 @@ class RegisterValidation:
             if not self.isDetailsExists():
                 msg+="User already exists"
 
-            print(msg)
             return msg
         except Exception as e:
             raise e
     
     def isEmailValid(self) -> bool:
+        """_summary_: This validates the email id
+
+        Returns:
+            bool: True if the email id is valid else False
+        """
         if re.fullmatch(self.regex, self.user.email_id):
             return True
         else:
@@ -148,8 +188,6 @@ class RegisterValidation:
     @staticmethod
     def getPasswordHash(password: str) -> str:
             return bcrypt_context.hash(password)
-
-    
 
     def validateRegistration(self) -> bool:
 

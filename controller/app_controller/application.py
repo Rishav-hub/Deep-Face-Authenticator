@@ -33,7 +33,6 @@ async def loginEmbedding(request: Request, \
     
     try:
         user = await get_current_user(request)
-        print(user)
         if user is None:
             return RedirectResponse(url="/auth", status_code= status.HTTP_302_FOUND)
         

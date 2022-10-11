@@ -19,14 +19,14 @@ from face_auth.constant.auth_constant import SECRET_KEY, ALGORITHM
 # bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class Login(BaseModel):
-    """_summary_
+    """Base model for login
     """
     email_id: str
     password: str
 
 class Register(BaseModel):
     """
-    _summary_
+    Base model for register
     """
     Name: str
     username: str
@@ -42,16 +42,13 @@ router = APIRouter(prefix="/auth", tags=["auth"], responses= {"401": {"descripti
 # Calloging the logger for Database read and insert operations
 
 async def get_current_user(request: Request):
-    """_summary_
+    """This function is used to get the current user
 
     Args:
-        request (Request): _description_
-
-    Raises:
-        HTTPException: _description_
+        request (Request): Request from the route
 
     Returns:
-        _type_: _description_
+        dict: Returns the username and uuid of the user
     """
     try:
         secret_key = SECRET_KEY
@@ -76,9 +73,21 @@ async def get_current_user(request: Request):
         return response
 
 def create_access_token(uuid: str, username: str,\
-                            expires_delta: Optional[timedelta] = None):
+                            expires_delta: Optional[timedelta] = None) -> str:
+    """This function is used to create the access token
+
+    Args:
+        uuid (str): uuid of the user
+        username (str): username of the user
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """ 
+
     try:
-        
         secret_key = SECRET_KEY
         algorithm = ALGORITHM
         
@@ -95,19 +104,27 @@ def create_access_token(uuid: str, username: str,\
         raise e
 
 @router.post("/token")
-async def login_for_access_token(response: Response, login):
+async def login_for_access_token(response: Response, login) -> dict:
+    """_summary_
+
+    Args:
+        response (Response): _description_
+        login (_type_): _description_
+
+    Returns:
+        dict: _description_
+    """    
+
     try:
         userValidation = LoginValidation(login.email_id, login.password)
-        user = userValidation.authenticateUserLogin()
-
+        user:Optional[str] = userValidation.authenticateUserLogin()
         if not user:
-            return False
+            return {"status": False, "uuid":None}
         token_expires = timedelta(minutes=15)
         token = create_access_token(user['UUID'],user['username'],\
                                     expires_delta=token_expires)
-        print(token)
         response.set_cookie(key="access_token", value=token, httponly=True)
-        return True, user['UUID']
+        return {"status": True, "uuid":user['UUID']}
     except Exception as e:
         msg = "Failed to set access token"
         response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": msg})
@@ -115,6 +132,17 @@ async def login_for_access_token(response: Response, login):
 
 @router.get("/", response_class=JSONResponse)
 async def authentication_page(request: Request):
+    """_summary_
+
+    Args:
+        request (Request): _description_
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Authentication Page"})
     except Exception as e:
@@ -122,18 +150,27 @@ async def authentication_page(request: Request):
 
 @router.post("/", response_class=JSONResponse)
 async def login(request: Request, login: Login):
+    """_summary_
+
+    Args:
+        request (Request): _description_
+        login (Login): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         # response = RedirectResponse(url="/application/", status_code=status.HTTP_302_FOUND)
         msg = "Login Successful"
         response = JSONResponse(status_code=status.HTTP_200_OK, content={"message": msg})
-        validate_user_cookie,user_uuid = await login_for_access_token(response= response, login=login)
-        if not validate_user_cookie:
+        token_response = await login_for_access_token(response= response, login=login)
+        if not token_response['status']:
             msg = "Incorrect Username and password"
             return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"status": False, "message": msg})
             # return RedirectResponse(url="/", status_code=status.HTTP_401_UNAUTHORIZED, headers={"msg": msg})
         # msg = "Login Successfull"
         # response = JSONResponse(status_code=status.HTTP_200_OK, content={"message": msg}, headers={"uuid": "abda"})
-        response.headers["uuid"] = user_uuid
+        response.headers["uuid"] = token_response['uuid']
         return response
 
     except HTTPException:
@@ -148,6 +185,17 @@ async def login(request: Request, login: Login):
 
 @router.get("/register", response_class=JSONResponse)
 async def authentication_page(request: Request):
+    """_summary_
+
+    Args:
+        request (Request): _description_
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Registration Page"})
     except Exception as e:
@@ -208,6 +256,17 @@ async def register_user(request: Request,register: Register):
 
 @router.get("/logout")
 async def logout(request: Request):
+    """_summary_
+
+    Args:
+        request (Request): _description_
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         msg = "You have been logged out"
         # response =  RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND, headers={"msg": msg})

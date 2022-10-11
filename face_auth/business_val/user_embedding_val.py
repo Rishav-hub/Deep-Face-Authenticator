@@ -5,7 +5,6 @@ import io
 from typing import List
 from PIL import Image
 
-
 from deepface.commons.functions import detect_face
 from deepface import DeepFace
 from face_auth.data_access import user_embedding_data
@@ -13,20 +12,19 @@ from face_auth.data_access import user_embedding_data
 from face_auth.entity.user_embedding import Embedding
 from face_auth.data_access.user_embedding_data import UserEmbeddingData
 from face_auth.exception import AppException
-
-
+from face_auth.constant.embedding_constants import SIMILARITY_THRESHOLD
 
 class UserLoginEmbeddingValidation:
     def __init__(self, uuid_: str) -> None:
         self.uuid_ = uuid_
         self.user_embedding_data = UserEmbeddingData()
-        self.user_embedding = self.get_user_embeeding_object(self.uuid_)
+        self.user = self.user_embedding_data.get_user_embedding(uuid_)
 
     def validate(self) -> bool:
         try:
-            if self.user_embedding.UUID == None:
+            if self.user['UUID'] == None:
                 return False
-            if self.user_embedding.user_embed == None:
+            if self.user['user_embed'] == None:
                 return False
             return True
         except Exception as e:
@@ -44,9 +42,12 @@ class UserLoginEmbeddingValidation:
             return embed
         except Exception as e:
             raise AppException(e, sys) from e
-
+    
     @staticmethod
-    def generateEmbeddingList(files: List[Bytes]) -> bool:
+    def generateEmbeddingList(files: List[Bytes]) -> List[np.ndarray]:
+        """
+        Generate embedding list from image array
+        """
         embedding_list = []
         for contents in files:
             img = Image.open(io.BytesIO(contents))
@@ -66,6 +67,7 @@ class UserLoginEmbeddingValidation:
 
         Returns:
             List: _description_
+        
         """
         avg_embed = np.mean(embedding_list, axis = 0)   
         return avg_embed.tolist()
@@ -97,7 +99,7 @@ class UserLoginEmbeddingValidation:
             bool: _description_
         """
         try:
-            if self.user_embedding:
+            if self.user:
                 # Validate user embedding
                 if self.validate() == False:
                     return False
@@ -109,11 +111,10 @@ class UserLoginEmbeddingValidation:
                 avg_embedding_list = UserLoginEmbeddingValidation.averageEmbedding(embedding_list)
                 
                 # Get embedding from database
-                db_embedding = self.user_embedding.user_embed
+                db_embedding = self.user['user_embed']
                 # Calculate cosine similarity
                 simmilarity = UserLoginEmbeddingValidation.cosine_simmilarity(db_embedding, avg_embedding_list)
-                print(simmilarity)
-                if simmilarity > 0.5:
+                if simmilarity >= SIMILARITY_THRESHOLD:
                     return True
                 else:
                     return False
@@ -142,7 +143,7 @@ class UserRegisterEmbeddingValidation:
     def __init__(self, uuid_:str) -> None:
         self.uuid_ = uuid_
         self.user_embedding_data = UserEmbeddingData()
-    
+
     def saveEmbedding(self, files: bytes):
         """_summary_
 
