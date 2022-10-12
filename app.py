@@ -1,6 +1,3 @@
-from fastapi import FastAPI, Response
-from starlette.responses import RedirectResponse
-from starlette import status
 import uvicorn
 from fastapi import FastAPI, Response
 from starlette import status
