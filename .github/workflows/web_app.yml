@@ -27,6 +27,7 @@ jobs:
         run: |
           docker build . -t ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
           docker push ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
+          
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
