@@ -1,5 +1,4 @@
 import pymongo
-import os
 
 from face_auth.constant.database_constants import DATABASE_NAME, ATLAS_CLUSTER_USERNAME,\
         ATLAS_CLUSTER_PASSWORD

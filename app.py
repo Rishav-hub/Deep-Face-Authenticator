@@ -1,5 +1,3 @@
-# from face_auth.entity.user import User
-# from face_auth.business_val.user_val import UserValidation
 from fastapi import FastAPI,Response
 from starlette.responses import RedirectResponse
 from starlette import status

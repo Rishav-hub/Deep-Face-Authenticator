@@ -1,7 +1,3 @@
-from pydantic import BaseModel
-from typing import List
-import uuid
-
 class Embedding:
     """Entity class for user embedding"""
 

@@ -1,22 +1,16 @@
-import os
-import uuid
-from pymongo.common import validate_type_registry
 from starlette.responses import JSONResponse
 from fastapi import HTTPException, status, APIRouter\
     , Request, Response
 from pydantic import BaseModel
 from typing import Optional
-# from passlib.context import CryptContext
 from datetime import datetime 
 from datetime import timedelta
 from jose import jwt, JWTError
 
 from face_auth.entity.user import User
 from face_auth.business_val.user_val import RegisterValidation, LoginValidation
-from face_auth.utils.util import CommonUtils
 from face_auth.constant.auth_constant import SECRET_KEY, ALGORITHM
 
-# bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class Login(BaseModel):
     """Base model for login
@@ -91,7 +85,6 @@ def create_access_token(uuid: str, username: str,\
         secret_key = SECRET_KEY
         algorithm = ALGORITHM
         
-        print(uuid, username)
         encode = {"sub": uuid, "username": username}
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
@@ -119,16 +112,16 @@ async def login_for_access_token(response: Response, login) -> dict:
         userValidation = LoginValidation(login.email_id, login.password)
         user:Optional[str] = userValidation.authenticateUserLogin()
         if not user:
-            return {"status": False, "uuid":None}
+            return {"status": False, "uuid":None,"response": response}
         token_expires = timedelta(minutes=15)
         token = create_access_token(user['UUID'],user['username'],\
                                     expires_delta=token_expires)
         response.set_cookie(key="access_token", value=token, httponly=True)
-        return {"status": True, "uuid":user['UUID']}
+        return {"status": True, "uuid":user['UUID'] , "response": response}
     except Exception as e:
         msg = "Failed to set access token"
         response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": msg})
-        return response
+        return {"status": False, "uuid":None, "response": response}
 
 @router.get("/", response_class=JSONResponse)
 async def authentication_page(request: Request):
@@ -171,6 +164,7 @@ async def login(request: Request, login: Login):
         # msg = "Login Successfull"
         # response = JSONResponse(status_code=status.HTTP_200_OK, content={"message": msg}, headers={"uuid": "abda"})
         response.headers["uuid"] = token_response['uuid']
+
         return response
 
     except HTTPException:
@@ -178,7 +172,6 @@ async def login(request: Request, login: Login):
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"status": False, "message": msg})
         # return RedirectResponse(url="/", status_code=status.HTTP_401_UNAUTHORIZED, headers={"msg": msg})
     except Exception as e:
-        print(e)
         msg = "User NOT Found"
         response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"status": False, "message": msg})
         return response
@@ -229,9 +222,6 @@ async def register_user(request: Request,register: Register):
         ph_no = register.ph_no
 
         # Add uuid to the session
-        
-        # print(request.session["uuid"])
-        
         user = User(name, username, email_id, ph_no, password1, password2)
         request.session["uuid"] = user.uuid_
 

@@ -7,11 +7,11 @@ from PIL import Image
 
 from deepface.commons.functions import detect_face
 from deepface import DeepFace
-from face_auth.data_access import user_embedding_data
 
 from face_auth.entity.user_embedding import Embedding
 from face_auth.data_access.user_embedding_data import UserEmbeddingData
 from face_auth.exception import AppException
+from face_auth.logger import logging
 from face_auth.constant.embedding_constants import SIMILARITY_THRESHOLD,\
         DETECTOR_BACKEND, ENFORCE_DETECTION, EMBEDDING_MODEL_NAME
 
@@ -61,7 +61,7 @@ class UserLoginEmbeddingValidation:
 
     @staticmethod
     def averageEmbedding(embedding_list: List[np.ndarray]) -> List:
-        """_summary_
+        """Function to calculate the average embedding of the list of embeddings
 
         Args:
             embedding_list (List[np.ndarray]): _description_
@@ -90,55 +90,71 @@ class UserLoginEmbeddingValidation:
             raise AppException(e, sys) from e
 
     def compareEmbedding(self, files: bytes) -> bool:
-        """_summary_
+        """Function to compare the embedding of the current image with the embedding of the database
 
         Args:
-            db_embedding (list): _description_
-            current_embedding (list): _description_
+            files (list): Bytes of images
 
         Returns:
-            bool: _description_
+            bool: Returns True if the similarity is greater than the threshold
         """
         try:
+
             if self.user:
+                logging.info("Validating User Embedding ......")
                 # Validate user embedding
                 if self.validate() == False:
                     return False
 
+                logging.info("Embedding Validation Successfull.......")
                 # Generate embedding list
+
+                logging.info("Generating Embedding List .......")
                 embedding_list = UserLoginEmbeddingValidation.generateEmbeddingList(files)
 
+                logging.info("Embedding List generated.......")
                 # Calculate average embedding
+
+                logging.info("Calculating Average Embedding .......")
                 avg_embedding_list = UserLoginEmbeddingValidation.averageEmbedding(embedding_list)
-                
+                logging.info("Average Embedding calculated.......")
+
                 # Get embedding from database
                 db_embedding = self.user['user_embed']
+
+                logging.info("Calculating Cosine Similarity .......")
                 # Calculate cosine similarity
                 simmilarity = UserLoginEmbeddingValidation.cosine_simmilarity(db_embedding, avg_embedding_list)
+                logging.info("Cosine Similarity calculated.......")
+
                 if simmilarity >= SIMILARITY_THRESHOLD:
+                    logging.info("User Authenticated Successfully.......")
                     return True
                 else:
+                    logging.info("User Authentication Failed.......")
                     return False
+            logging.info("User Authentication Failed.......")
+            
             return False
         except Exception as e:
             raise AppException(e, sys) from e
 
     
-    def get_user_embeeding_object(self, uuid_:str) -> Embedding:
-        """_summary_
+    # def get_user_embeeding_object(self, uuid_:str) -> Embedding:
+    #     """_summary_
 
-        Args:
-            user_embedding (dict): _description_
+    #     Args:
+    #         user_embedding (dict): _description_
 
-        Returns:
-            Embedding: _description_
-        """
-        try:
+    #     Returns:
+    #         Embedding: _description_
+    #     """
+    #     try:
 
-            user_embedding = self.user_embedding_data.get_user_embedding(uuid_)
-            return user_embedding
-        except Exception as e:
-            raise AppException(e, sys) from e
+    #         user_embedding = self.user_embedding_data.get_user_embedding(uuid_)
+    #         return user_embedding
+    #     except Exception as e:
+    #         raise AppException(e, sys) from e
 
 class UserRegisterEmbeddingValidation:
     def __init__(self, uuid_:str) -> None:
@@ -146,13 +162,12 @@ class UserRegisterEmbeddingValidation:
         self.user_embedding_data = UserEmbeddingData()
 
     def saveEmbedding(self, files: bytes):
-        """_summary_
-
+        """This function will generate embedding list and save it to database
         Args:
-            user_embedding (dict): _description_
+            files (dict): Bytes of images
 
         Returns:
-            Embedding: _description_
+            Embedding: saves the image to database
         """
         try:
             embedding_list = UserLoginEmbeddingValidation.generateEmbeddingList(files)

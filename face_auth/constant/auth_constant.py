@@ -1,4 +1,3 @@
-import os
 from face_auth.utils.util import CommonUtils
 
 

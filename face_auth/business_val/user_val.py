@@ -1,17 +1,14 @@
-import sys
-import os
 import re
-import uuid
+import sys
 from passlib.context import CryptContext
 from typing import Optional
-from datetime import datetime, timedelta
-from jose import jwt
-from dotenv import dotenv_values
 
 # from face_auth.entity.user import Login, Register
 from face_auth.entity.user import User
 from face_auth.data_access.user_data import UserData
+from face_auth.logger import logging
 from face_auth.exception import AppException
+
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         
@@ -66,7 +63,7 @@ class LoginValidation:
         """
         return bcrypt_context.verify(plain_password, hashed_password)
     
-    def validateLogin(self) -> bool:
+    def validateLogin(self) -> dict:
 
         """This checks all the validation conditions for the user registration
         """
@@ -83,17 +80,23 @@ class LoginValidation:
             password (str): _description_
         """
         try:
+            
+            logging.info("Authenticating the user details.....")
             if self.validateLogin()['status']:
                 userdata = UserData()
+                logging.info("Fetching the user details from the database.....")
                 user_login_val = userdata.get_user({"email_id": self.email_id})
                 if not user_login_val:
+                    logging.info("User not found while Login")
                     return False
                 if not self.verifyPassword(self.password, user_login_val['password']):
+                    logging.info("Password is incorrect")
                     return False
+                logging.info("User authenticated successfully....")
                 return user_login_val
             return False
         except Exception as e:
-            raise e
+            raise AppException(e, sys) from e
     
 
 class RegisterValidation:
@@ -180,7 +183,6 @@ class RegisterValidation:
         username_val = self.userdata.get_user({"username": self.user.username})
         emailid_val = self.userdata.get_user({"email_id": self.user.email_id})
         uuid_val = self.userdata.get_user({"UUID": self.uuid})
-        # print(username_val, emailid_val, uuid_val)
         if username_val == None and emailid_val == None and uuid_val == None:
             return True
         return False
@@ -204,10 +206,18 @@ class RegisterValidation:
         Returns:
             bool: _description_
         """
-        if self.validateRegistration()['status']:
-            hashed_password: str = self.getPasswordHash(self.user.password1)
-            user_data_dict: dict= {"Name": self.user.Name, "username": self.user.username, "password": hashed_password,\
-                     "email_id": self.user.email_id, "ph_no": self.user.ph_no, "UUID": self.uuid}
-            self.userdata.save_user(user_data_dict)
-            return {"status": True, "msg": "User registered successfully"}
-        return {"status": False, "msg": self.validate()}
+        try:
+            logging.info("Validating the user details while Registration.....")
+            if self.validateRegistration()['status']:
+                logging.info("Generating the password hash.....")
+                hashed_password: str = self.getPasswordHash(self.user.password1)
+                user_data_dict: dict= {"Name": self.user.Name, "username": self.user.username, "password": hashed_password,\
+                        "email_id": self.user.email_id, "ph_no": self.user.ph_no, "UUID": self.uuid}
+                logging.info("Saving the user details in the database.....")
+                self.userdata.save_user(user_data_dict)
+                logging.info("Saving the user details in the database completed.....")
+                return {"status": True, "msg": "User registered successfully"}
+            logging.info("Validation failed while Registration.....")
+            return {"status": False, "msg": self.validate()}
+        except Exception as e:
+            raise e

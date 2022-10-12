@@ -1,6 +1,4 @@
-from typing import List
 from face_auth.constant.database_constants import EMBEDDING_COLLECTION_NAME
-from face_auth.data_access.user_data import UserData
 
 # from face_auth.entity.user_embedding import Embedding
 from face_auth.config.database import MongodbClient

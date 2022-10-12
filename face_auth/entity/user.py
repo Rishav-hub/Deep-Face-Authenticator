@@ -1,20 +1,4 @@
-from pydantic import BaseModel
-from typing import List
 import uuid
-# class LoginDetails:
-
-#     def __init__(self, email_id: str, password: str):
-#         self.email_id = email_id
-#         self.password = password
-    
-#     def to_dict(self) -> dict:
-#         return {
-#             "email_id": self.email_id,
-#             "password": self.password
-#         }
-    
-#     def __str__(self) -> str:
-#         return str(self.to_dict())
 
 class User:
 
