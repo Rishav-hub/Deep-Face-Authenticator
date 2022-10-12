@@ -1,14 +1,13 @@
 # from face_auth.entity.user import User
 # from face_auth.business_val.user_val import UserValidation
-from fastapi import FastAPI,Response
-from starlette.responses import RedirectResponse
-from starlette import status
 import uvicorn
+from fastapi import FastAPI, Response
+from starlette import status
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.responses import RedirectResponse
 
-from controller.auth_controller import authentication
 from controller.app_controller import application
-
+from controller.auth_controller import authentication
 
 app = FastAPI()
 
