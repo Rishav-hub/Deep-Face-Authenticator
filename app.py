@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Response
+from fastapi import FastAPI, Response
 from starlette.responses import RedirectResponse
 from starlette import status
 import uvicorn
@@ -17,9 +17,11 @@ app = FastAPI()
 def read_root():
     return RedirectResponse(url="/application", status_code=status.HTTP_302_FOUND)
 
+
 @app.get("/test")
 def test_route():
     return Response("Testing CICD")
+
 
 app.include_router(authentication.router)
 
@@ -30,4 +32,3 @@ app.add_middleware(SessionMiddleware, secret_key="!secret")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
-    

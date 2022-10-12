@@ -1,9 +1,8 @@
 from starlette.responses import JSONResponse
-from fastapi import HTTPException, status, APIRouter\
-    , Request, Response
+from fastapi import HTTPException, status, APIRouter, Request, Response
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime 
+from datetime import datetime
 from datetime import timedelta
 from jose import jwt, JWTError
 
@@ -15,13 +14,16 @@ from face_auth.constant.auth_constant import SECRET_KEY, ALGORITHM
 class Login(BaseModel):
     """Base model for login
     """
+
     email_id: str
     password: str
+
 
 class Register(BaseModel):
     """
     Base model for register
     """
+
     Name: str
     username: str
     email_id: str
@@ -30,10 +32,15 @@ class Register(BaseModel):
     password2: str
 
 
-router = APIRouter(prefix="/auth", tags=["auth"], responses= {"401": {"description": "Not Authorized!!!"}})
+router = APIRouter(
+    prefix="/auth",
+    tags=["auth"],
+    responses={"401": {"description": "Not Authorized!!!"}},
+)
 
 
 # Calloging the logger for Database read and insert operations
+
 
 async def get_current_user(request: Request):
     """This function is used to get the current user
@@ -48,7 +55,7 @@ async def get_current_user(request: Request):
         secret_key = SECRET_KEY
         algorithm = ALGORITHM
 
-        token=request.cookies.get("access_token")
+        token = request.cookies.get("access_token")
         if token is None:
             return None
 
@@ -63,11 +70,15 @@ async def get_current_user(request: Request):
         raise HTTPException(status_code=404, detail="Detail Not Found")
     except Exception as e:
         msg = "Error while getting current user"
-        response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": msg})
+        response = JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND, content={"message": msg}
+        )
         return response
 
-def create_access_token(uuid: str, username: str,\
-                            expires_delta: Optional[timedelta] = None) -> str:
+
+def create_access_token(
+    uuid: str, username: str, expires_delta: Optional[timedelta] = None
+) -> str:
     """This function is used to create the access token
 
     Args:
@@ -79,12 +90,12 @@ def create_access_token(uuid: str, username: str,\
 
     Returns:
         _type_: _description_
-    """ 
+    """
 
     try:
         secret_key = SECRET_KEY
         algorithm = ALGORITHM
-        
+
         encode = {"sub": uuid, "username": username}
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
@@ -92,9 +103,10 @@ def create_access_token(uuid: str, username: str,\
             expire = datetime.utcnow() + timedelta(minutes=15)
         encode.update({"exp": expire})
         # return jwt.encode(encode, Configuration().SECRET_KEY, algorithm=Configuration().ALGORITHM)
-        return jwt.encode(encode,secret_key, algorithm=algorithm)
+        return jwt.encode(encode, secret_key, algorithm=algorithm)
     except Exception as e:
         raise e
+
 
 @router.post("/token")
 async def login_for_access_token(response: Response, login) -> dict:
@@ -106,22 +118,26 @@ async def login_for_access_token(response: Response, login) -> dict:
 
     Returns:
         dict: _description_
-    """    
+    """
 
     try:
         userValidation = LoginValidation(login.email_id, login.password)
-        user:Optional[str] = userValidation.authenticateUserLogin()
+        user: Optional[str] = userValidation.authenticateUserLogin()
         if not user:
-            return {"status": False, "uuid":None,"response": response}
+            return {"status": False, "uuid": None, "response": response}
         token_expires = timedelta(minutes=15)
-        token = create_access_token(user['UUID'],user['username'],\
-                                    expires_delta=token_expires)
+        token = create_access_token(
+            user["UUID"], user["username"], expires_delta=token_expires
+        )
         response.set_cookie(key="access_token", value=token, httponly=True)
-        return {"status": True, "uuid":user['UUID'] , "response": response}
+        return {"status": True, "uuid": user["UUID"], "response": response}
     except Exception as e:
         msg = "Failed to set access token"
-        response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": msg})
-        return {"status": False, "uuid":None, "response": response}
+        response = JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND, content={"message": msg}
+        )
+        return {"status": False, "uuid": None, "response": response}
+
 
 @router.get("/", response_class=JSONResponse)
 async def authentication_page(request: Request):
@@ -135,11 +151,14 @@ async def authentication_page(request: Request):
 
     Returns:
         _type_: _description_
-    """    
+    """
     try:
-        return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Authentication Page"})
+        return JSONResponse(
+            status_code=status.HTTP_200_OK, content={"message": "Authentication Page"}
+        )
     except Exception as e:
         raise e
+
 
 @router.post("/", response_class=JSONResponse)
 async def login(request: Request, login: Login):
@@ -151,30 +170,42 @@ async def login(request: Request, login: Login):
 
     Returns:
         _type_: _description_
-    """    
+    """
     try:
         # response = RedirectResponse(url="/application/", status_code=status.HTTP_302_FOUND)
         msg = "Login Successful"
-        response = JSONResponse(status_code=status.HTTP_200_OK, content={"message": msg})
-        token_response = await login_for_access_token(response= response, login=login)
-        if not token_response['status']:
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK, content={"message": msg}
+        )
+        token_response = await login_for_access_token(response=response, login=login)
+        if not token_response["status"]:
             msg = "Incorrect Username and password"
-            return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"status": False, "message": msg})
+            return JSONResponse(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                content={"status": False, "message": msg},
+            )
             # return RedirectResponse(url="/", status_code=status.HTTP_401_UNAUTHORIZED, headers={"msg": msg})
         # msg = "Login Successfull"
         # response = JSONResponse(status_code=status.HTTP_200_OK, content={"message": msg}, headers={"uuid": "abda"})
-        response.headers["uuid"] = token_response['uuid']
+        response.headers["uuid"] = token_response["uuid"]
 
         return response
 
     except HTTPException:
         msg = "UnKnown Error"
-        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"status": False, "message": msg})
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"status": False, "message": msg},
+        )
         # return RedirectResponse(url="/", status_code=status.HTTP_401_UNAUTHORIZED, headers={"msg": msg})
     except Exception as e:
         msg = "User NOT Found"
-        response = JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"status": False, "message": msg})
+        response = JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={"status": False, "message": msg},
+        )
         return response
+
 
 @router.get("/register", response_class=JSONResponse)
 async def authentication_page(request: Request):
@@ -188,14 +219,18 @@ async def authentication_page(request: Request):
 
     Returns:
         _type_: _description_
-    """    
+    """
     try:
-        return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Registration Page"})
+        return JSONResponse(
+            status_code=status.HTTP_200_OK, content={"message": "Registration Page"}
+        )
     except Exception as e:
         raise e
+
+
 @router.post("/register", response_class=JSONResponse)
-async def register_user(request: Request,register: Register):
-    
+async def register_user(request: Request, register: Register):
+
     """Post request to register a user
 
     Args:
@@ -230,19 +265,26 @@ async def register_user(request: Request,register: Register):
 
         validate_regitration = userValidation.validateRegistration()
         if not validate_regitration["status"]:
-            msg = validate_regitration['msg']
-            response = JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"status": False, "message": msg})
+            msg = validate_regitration["msg"]
+            response = JSONResponse(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                content={"status": False, "message": msg},
+            )
             return response
-        
+
         # Save user if the validation is successful
         validation_status = userValidation.saveUser()
 
         msg = "Registration Successful...Please Login to continue"
-        response = JSONResponse(status_code=status.HTTP_200_OK, content={"status": True, "message": validation_status['msg']},\
-                                headers={"uuid": user.uuid_})
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={"status": True, "message": validation_status["msg"]},
+            headers={"uuid": user.uuid_},
+        )
         return response
     except Exception as e:
         raise e
+
 
 @router.get("/logout")
 async def logout(request: Request):
@@ -256,12 +298,14 @@ async def logout(request: Request):
 
     Returns:
         _type_: _description_
-    """    
+    """
     try:
         msg = "You have been logged out"
         # response =  RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND, headers={"msg": msg})
         response.delete_cookie(key="access_token")
-        response = JSONResponse(status_code=status.HTTP_200_OK, content={"status": True, "message": msg})
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK, content={"status": True, "message": msg}
+        )
         return response
     except Exception as e:
         raise e

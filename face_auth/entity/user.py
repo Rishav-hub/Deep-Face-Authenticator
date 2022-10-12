@@ -1,9 +1,17 @@
 import uuid
 
-class User:
 
-    def __init__(self, Name: str, username: str, email_id: str, ph_no: str, password1: str, password2: str,\
-                    uuid_: str = None):
+class User:
+    def __init__(
+        self,
+        Name: str,
+        username: str,
+        email_id: str,
+        ph_no: str,
+        password1: str,
+        password2: str,
+        uuid_: str = None,
+    ):
         self.Name = Name
         self.username = username
         self.email_id = email_id
@@ -16,6 +24,6 @@ class User:
 
     def to_dict(self) -> dict:
         return self.__dict__
-    
+
     def __str__(self) -> str:
         return str(self.to_dict())
