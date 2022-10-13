@@ -90,6 +90,7 @@ After a few seconds, the application settings will be reflected. Now click on ov
 
 In order to perform automatic deployments to Azure Web App via GitHub actions, we need to create azure credentials, before we proceed to create azure credentials make sure that azure cli is installed in your system. Once that is done, execute the following command, to create a role in Azure which will give credentials to deploy to azure web app via github actions. 
 
+NOTE -: Execute this command in command prompt or powershell terminal.
 ```bash
 az ad sp create-for-rbac --name "{your_app_name}" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<resource-group-name> --sdk-auth
 ```
