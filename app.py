@@ -17,7 +17,7 @@ def read_root():
 
 @app.get("/test")
 def test_route():
-    return Response("Testing CICD")
+    return Response("Testing CI-CD")
 
 
 app.include_router(authentication.router)
