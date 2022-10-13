@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Face Authentication System</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='application/assets/favicon.ico') }}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', path='application/css/styles.css') }}" rel="stylesheet" />
+    </head>
+    <body>
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 text-center mb-5">
+                        <h2 class="heading-section">Add Your Project</h2>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="login-wrap p-0">
+                      <h3 class="mb-4 text-center">Enter your details here</h3>
+                      <form method="POST" class="signin-form">
+                          <div class="form-group">
+                              <input type="text" class="form-control" placeholder="title" name= 'title' required>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="form-control" placeholder="description" name= 'description' required>
+                          </div>
+                          <div class="form-group">
+                            <input type="text" class="form-control" placeholder="github_url" name= 'github_url' required>
+                          </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="technology" name= 'technology' required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-danger submit px-3">Add Application</button>
+                        </div>
+                        <div class="form-group d-md-flex">
+                            <div class="form-control btn btn-primary submit px-3">
+                                <a href="/application" style="color: rgb(8, 8, 8)">Home Page</a>
+                            </div>
+                        </div>
+                    </form>
+                  <!-- <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
+                  <div class="social d-flex text-center">
+                      <a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
+                      <a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
+                  </div> -->
+                  <!-- </div>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    
+
+       <!-- Footer-->
+       <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-5 text-center text-white">Copyright &copy; iNeuron.ai 2022</p></div>
+        </footer>
+    
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', path='/application/js/scripts.js') }}"></script>
+    </body>
+</html>

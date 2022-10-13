@@ -1,4 +1,4 @@
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, HTMLResponse
 from fastapi import HTTPException, status, APIRouter, Request, Response
 from pydantic import BaseModel
 from typing import Optional
@@ -139,7 +139,7 @@ async def login_for_access_token(response: Response, login) -> dict:
         return {"status": False, "uuid": None, "response": response}
 
 
-@router.get("/", response_class=JSONResponse)
+@router.get("/", response_class=HTMLResponse)
 async def authentication_page(request: Request):
     """_summary_
 
@@ -147,10 +147,10 @@ async def authentication_page(request: Request):
         request (Request): _description_
 
     Raises:
-        e: _description_
+        e: Exception
 
     Returns:
-        _type_: _description_
+        Response: _description_
     """
     try:
         return JSONResponse(
