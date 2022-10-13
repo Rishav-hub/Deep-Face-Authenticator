@@ -3,7 +3,8 @@ from typing import List
 
 from fastapi import APIRouter, File, Request
 from starlette import status
-from starlette.responses import JSONResponse, RedirectResponse
+from starlette.responses import JSONResponse, RedirectResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 from controller.auth_controller.authentication import get_current_user
 from face_auth.business_val.user_embedding_val import (
@@ -16,9 +17,13 @@ router = APIRouter(
     tags=["application"],
     responses={"401": {"description": "Not Authorized!!!"}},
 )
+templates = Jinja2Templates(directory= os.path.join(os.getcwd(), "templates"))
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+@router.get("/", response_class=HTMLResponse)
+async def application(request: Request):
+    return templates.TemplateResponse("error.html", {"request": request})
 
 @router.post("/")
 async def loginEmbedding(
