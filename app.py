@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from starlette import status
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
@@ -13,12 +13,6 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     return RedirectResponse(url="/application", status_code=status.HTTP_302_FOUND)
-
-
-@app.get("/test")
-def test_route():
-    return Response("Testing CI-CD")
-
 
 app.include_router(authentication.router)
 
