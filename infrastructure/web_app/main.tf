@@ -19,7 +19,7 @@ resource "azurerm_linux_web_app" "mydockerapp" {
 
   site_config {
     application_stack {
-      docker_image = "${module.container_registry.faceappacr_login_server}/${var.docker_image_name}"
+      docker_image     = "${module.container_registry.faceappacr_login_server}/${var.docker_image_name}"
       docker_image_tag = var.docker_image_tag
     }
   }

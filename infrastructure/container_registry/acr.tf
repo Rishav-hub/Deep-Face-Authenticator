@@ -23,7 +23,7 @@ output "faceappacr_admin_password" {
 }
 
 output "faceapp_resource_group_name" {
- value = module.resource_group.faceapp_resource_group_name 
+  value = module.resource_group.faceapp_resource_group_name
 }
 
 output "faceapp_resource_group_location" {
