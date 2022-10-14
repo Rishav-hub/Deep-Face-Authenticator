@@ -1,14 +1,14 @@
-from starlette.responses import JSONResponse
-from fastapi import HTTPException, status, APIRouter, Request, Response
-from pydantic import BaseModel
+from datetime import datetime, timedelta
 from typing import Optional
-from datetime import datetime
-from datetime import timedelta
-from jose import jwt, JWTError
 
+from fastapi import APIRouter, HTTPException, Request, Response, status
+from jose import JWTError, jwt
+from pydantic import BaseModel
+from starlette.responses import JSONResponse
+
+from face_auth.business_val.user_val import LoginValidation, RegisterValidation
+from face_auth.constant.auth_constant import ALGORITHM, SECRET_KEY
 from face_auth.entity.user import User
-from face_auth.business_val.user_val import RegisterValidation, LoginValidation
-from face_auth.constant.auth_constant import SECRET_KEY, ALGORITHM
 
 
 class Login(BaseModel):
