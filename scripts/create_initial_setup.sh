@@ -1,7 +1,7 @@
 #!bin/bash
 
-az group create -n faceapptfstate -l eastus2
+az group create -n <your_app_name>tfstate -l eastus2
  
-az storage account create -n faceapptfstate -g faceapptfstate -l eastus2 --sku "Standard_LRS"
+az storage account create -n <your_app_name>tfstate -g <your_app_name>tfstate -l eastus2 --sku "Standard_LRS"
  
-az storage container create -n tfstate --account-name faceapptfstate
+az storage container create -n tfstate --account-name <your_app_name>tfstate
