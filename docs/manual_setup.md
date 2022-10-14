@@ -102,28 +102,6 @@ Fill in the neccessary details, in the command mentioned above, like "your_app_n
 
 Once that is done, you will be able to perform automatic deployments to azure web app from github actions whenever there is code change to github.
 
-## Creating Azure Creditials for automating the infrastructure provisioning using GitHub Actions
-
-In order to perform automatic infrastucture provisioning in Azure Cloud using GitHub Actions we need to create azure credentials, before we proceed to create azure creditials make sure that make sure that azure cli is installed in your system. Once that is done, execute the following command, to create a role in Azure which will give credentials to automate infrastructure provisioning using github actions
-
-NOTE -: Execute this command in command prompt or powershell terminal.
-
-```bash
-az ad sp create-for-rbac --name "<your_app_name>_terraform_role" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
-```
-
-On successfull execution of the command, there will be json output, we need to note down some of the values and updated them in GitHub secrets. Some of the values which are to be noted are
-
-AZURE_AD_CLIENT_ID - json value of clientId
-
-AZURE_AD_CLIENT_SECRET - json value of clientSecret
-
-AZURE_SUBSCRIPTION_ID - subscription-id
-
-AZURE_AD_TENANT_ID - json value of tenantId
-
-Once these values are noted, updated these in Github secrets with the same name. Once that is done, terraform infrastructure provisioning is automated by using GitHub actions and it will be triggered when there are changes in the infrastructure folder of the repository.
-
 ## Destroying all the Azure Resources created
 
 Once the project setup is done, and you have tested your application in the cloud. It is time to destroy the resources which we have created in Azure so that we do not incur any extra charges, to delete all the resources at a time, click on the resource group section and then click your resource group name, and once it is done you will directed to resource group page, there you will find a "Delete resource group" button, click on that, and type the resource group name in the space provided and click on delete. After sometime the resource group will be deleted and along with that all the created resources.
