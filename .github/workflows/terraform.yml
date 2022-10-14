@@ -1,32 +1,50 @@
-name: Apply changes to infrastructure
+name: Apply changest to Infrastructure
 
 on:
   push:
     branches:
       - main
-    paths:
-      - infrastructure/*
-    
+
 jobs:
-  deploy:
-    name: Deploy
+  terraform:
+    name: "Terraform"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Format the terraform modules
+        id: terraform-fmt
+        run: |
+          terraform -chdir=infrastructure/ fmt -recursive
 
-      - name: Initialize Terraform modules
+      - name: Initialize the terraform modules
         id: terraform-init
         run: |
           terraform -chdir=infrastructure/ init
 
-      - name: Apply the Terraform modules
-        id: terraform-apply
+      - name: Validate the terraform modules
+        id: terraform-validate
+        run: |
+          terraform -chdir=infrastructure/ validate
+
+      - name: Plan the terraform modules
+        id: terraform-plan
         run: |
           terraform -chdir=infrastructure/ plan
+
+      - name: Apply the terraform modules
+        id: terraform-apply
+        run: |
+          terraform -chdir=infrastructure/ apply --auto-approve
