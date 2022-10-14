@@ -1,5 +1,5 @@
 variable "faceapp_acr_name" {
-  default = "scaniaACR"
+  default = "faceappACR"
   type    = string
 }
 

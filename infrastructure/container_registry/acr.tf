@@ -2,8 +2,12 @@ module "resource_group" {
   source = "../resource_group"
 }
 
+resource "random_id" "random_string_for_acr" {
+  byte_length = 8
+}
+
 resource "azurerm_container_registry" "faceappacr" {
-  name                = var.faceapp_acr_name
+  name                = "${random_id.random_string_for_acr.dec}${var.faceapp_acr_name}"
   resource_group_name = module.resource_group.faceapp_resource_group_name
   location            = module.resource_group.faceapp_resource_group_location
   admin_enabled       = var.faceapp_acr_admin_enabled

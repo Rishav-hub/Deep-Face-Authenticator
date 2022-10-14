@@ -2,8 +2,12 @@ module "container_registry" {
   source = "../container_registry"
 }
 
+resource "random_id" "random_string_for_webapp" {
+  byte_length = 8
+}
+
 resource "azurerm_linux_web_app" "mydockerapp" {
-  name                = var.web_app_name
+  name                = "${random_id.random_string_for_webapp.dec}${var.web_app_name}"
   resource_group_name = module.container_registry.faceapp_resource_group_name
   location            = module.container_registry.faceapp_resource_group_location
   service_plan_id     = azurerm_service_plan.faceapp_service_plan.id
