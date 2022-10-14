@@ -35,10 +35,3 @@ ENV EMBEDDING_COLLECTION_NAME=$EMBEDDING_COLLECTION_NAME
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y && pip install -r requirements.txt
 
 CMD ["python", "app.py"]
-
-
-
-
-
-
-
