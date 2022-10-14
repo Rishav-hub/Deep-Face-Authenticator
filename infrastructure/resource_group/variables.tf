@@ -1,9 +1,9 @@
-variable "my_resoure_group_name" {
+variable "faceapp_resource_group_name" {
   type    = string
-  default = "myRG"
+  default = "faceappRG"
 }
 
-variable "my_resoure_group_location" {
+variable "faceapp_resource_group_location" {
   type    = string
   default = "eastus"
 }

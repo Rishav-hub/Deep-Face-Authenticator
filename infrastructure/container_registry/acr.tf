@@ -1,19 +1,23 @@
-resource "azurerm_container_registry" "my_acr" {
-  name                = var.my_acr_name
-  resource_group_name = var.my_resource_group_name
-  location            = var.my_resource_group_location
-  admin_enabled       = var.my_acr_admin_enabled
-  sku                 = var.my_acr_sku
+module "resource_group" {
+  source = "../resource_group"
 }
 
-output "my_acr_login_server" {
-  value = azurerm_container_registry.my_acr.login_server
+resource "azurerm_container_registry" "faceappacr" {
+  name                = var.faceapp_acr_name
+  resource_group_name = module.resource_group.faceapp_resource_group_location
+  location            = module.resource_group.faceapp_resource_group_location
+  admin_enabled       = var.faceapp_acr_admin_enabled
+  sku                 = var.faceapp_acr_sku
 }
 
-output "my_acr_admin_username" {
-  value = azurerm_container_registry.my_acr.admin_username
+output "faceappacr_login_server" {
+  value = azurerm_container_registry.faceappacr.login_server
 }
 
-output "my_acr_admin_password" {
-  value = azurerm_container_registry.my_acr.admin_password
+output "faceappacr_admin_username" {
+  value = azurerm_container_registry.faceappacr.admin_username
+}
+
+output "faceappacr_admin_password" {
+  value = azurerm_container_registry.faceappacr.admin_password
 }
