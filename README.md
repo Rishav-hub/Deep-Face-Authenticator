@@ -63,3 +63,11 @@ docker build -t face_auth --build-arg SECRET_KEY=<SECRET_KEY> --build-arg ALGORI
 ```
 docker run -d -p 8000:8000 <IMAGEID OR IMAGENAME>
 ```
+## Deployment to Azure
+
+### Services used
+- Azure container Registry (ACR) for Docker image of project is stored
+- Azure App Services for deploying the application
+- GitHub Actions for CI/CD
+
+#### Please refer this [documentation](https://github.com/Rishav-hub/face_auth_dev/blob/main/docs/setup.md) for deployment to Azure.
