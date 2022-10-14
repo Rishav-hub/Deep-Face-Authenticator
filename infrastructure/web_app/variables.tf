@@ -1,5 +1,5 @@
 variable "web_app_name" {
-  default = "faceapp"
+  default = "faceappsethu"
   type    = string
 }
 
@@ -35,5 +35,10 @@ variable "webapp_sku_name" {
 
 variable "docker_image_name" {
   default = "faceapp"
+  type    = string
+}
+
+variable "docker_image_tag" {
+  default = "latest"
   type    = string
 }

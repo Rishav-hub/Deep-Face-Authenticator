@@ -4,7 +4,7 @@ module "resource_group" {
 
 resource "azurerm_container_registry" "faceappacr" {
   name                = var.faceapp_acr_name
-  resource_group_name = module.resource_group.faceapp_resource_group_location
+  resource_group_name = module.resource_group.faceapp_resource_group_name
   location            = module.resource_group.faceapp_resource_group_location
   admin_enabled       = var.faceapp_acr_admin_enabled
   sku                 = var.faceapp_acr_sku
@@ -20,4 +20,12 @@ output "faceappacr_admin_username" {
 
 output "faceappacr_admin_password" {
   value = azurerm_container_registry.faceappacr.admin_password
+}
+
+output "faceapp_resource_group_name" {
+ value = module.resource_group.faceapp_resource_group_name 
+}
+
+output "faceapp_resource_group_location" {
+  value = module.resource_group.faceapp_resource_group_location
 }

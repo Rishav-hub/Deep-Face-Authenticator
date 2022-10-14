@@ -1,15 +1,11 @@
-module "resource_group" {
-  source = "../resource_group"
-}
-
 module "container_registry" {
   source = "../container_registry"
 }
 
 resource "azurerm_linux_web_app" "mydockerapp" {
   name                = var.web_app_name
-  resource_group_name = module.resource_group.faceapp_resource_group_name
-  location            = module.resource_group.faceapp_resource_group_location
+  resource_group_name = module.container_registry.faceapp_resource_group_name
+  location            = module.container_registry.faceapp_resource_group_location
   service_plan_id     = azurerm_service_plan.faceapp_service_plan.id
 
   app_settings = {
@@ -24,6 +20,7 @@ resource "azurerm_linux_web_app" "mydockerapp" {
   site_config {
     application_stack {
       docker_image = "${module.container_registry.faceappacr_login_server}/${var.docker_image_name}"
+      docker_image_tag = var.docker_image_tag
     }
   }
 }

@@ -11,15 +11,6 @@ provider "azurerm" {
   features {}
 }
 
-module "container_registry" {
-  source = "./container_registry"
-}
-
 module "web_app" {
   source = "./web_app"
-  depends_on = [
-    module.container_registry
-  ]
 }
-
-
