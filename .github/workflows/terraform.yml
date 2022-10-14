@@ -1,32 +1,32 @@
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - infrastructure/*
+name: Apply changes to infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infrastructure/*
     
-# name: Apply changes to infrastructure
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
 
-# jobs:
-#   deploy:
-#     name: Deploy
-#     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-#       - name: Login via Azure CLI
-#         uses: azure/login@v1
-#         with:
-#           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Initialize Terraform modules
+        id: terraform-init
+        run: |
+          terraform -chdir=infrastructure/ init
 
-#       - name: Initialize Terraform modules
-#         id: terraform-init
-#         run: |
-#           terraform -chdir=infrastructure/ init
-
-#       - name: Apply the Terraform modules
-#         id: terraform-apply
-#         run: |
-#           terraform -chdir=infrastructure/ plan
+      - name: Apply the Terraform modules
+        id: terraform-apply
+        run: |
+          terraform -chdir=infrastructure/ plan
