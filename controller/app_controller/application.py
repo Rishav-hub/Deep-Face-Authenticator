@@ -21,7 +21,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 @router.post("/")
-async def loginEmbedding(
+async def login_embedding(
     request: Request,
     files: List[bytes] = File(description="Multiple files as UploadFile"),
 ):
@@ -43,7 +43,7 @@ async def loginEmbedding(
         user_embedding_validation = UserLoginEmbeddingValidation(user["uuid"])
 
         # Compare embedding
-        user_simmilariy_status = user_embedding_validation.compareEmbedding(files)
+        user_simmilariy_status = user_embedding_validation.compare_embedding(files)
 
         if user_simmilariy_status:
             msg = "User is authenticated"
@@ -68,7 +68,7 @@ async def loginEmbedding(
 
 
 @router.post("/register_embedding")
-async def registerEmbedding(
+async def register_embedding(
     request: Request,
     files: List[bytes] = File(description="Multiple files as UploadFile"),
 ):
@@ -85,10 +85,12 @@ async def registerEmbedding(
     try:
         # Get the UUID from the session
         uuid = request.session.get("uuid")
+        if uuid is None:
+            return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
         user_embedding_validation = UserRegisterEmbeddingValidation(uuid)
 
         # Save the embeddings
-        user_embedding_validation.saveEmbedding(files)
+        user_embedding_validation.save_embedding(files)
 
         msg = "Embedding Stored Successfully in Database"
         response = JSONResponse(
