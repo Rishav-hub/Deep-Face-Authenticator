@@ -130,13 +130,13 @@ On successfull exectution of the commands, we will see that there will be resour
 Before running the terraform commands , we need to replace <your_app_name> in module.tf file with the same name as mentioned in the scripts/create_initial_setup.sh file, the same goes for scripts/delete_initial_setup.sh this is will deleting the infrastructure. Once the required changes are done.
 
 ```bash
-terraform -chdir=infrastructure/ validate
+terraform -chdir=infrastructure/ init
 ```
 
-This command validates whether the terraform modules are syntactically correct or not. If the terraform modules are syntactically correct, you will get response as "Success! The configuration is valid". Once the validation of the modules are done, we can initialize them using the following command
+This command validates whether the terraform modules are syntactically correct or not. If the terraform modules are syntactically correct, you will get response as "Success! The configuration is valid". Once the initialization of the modules are done, we can validate them using the following command
 
 ```bash
-terraform -chdir=infrastructure/ init
+terraform -chdir=infrastructure/ validate
 ```
 
 Now successfull execution of the commands, we will see that terraform modules are initialized with azure blob storage backend, and if we go to backend container which was created by the initial setup script, there will be blob (object) been created. This means that the terraform backend is successfully initialized.
