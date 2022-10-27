@@ -79,7 +79,7 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt-get update && sudo apt-get install terraform
 ```
 
-### Install Terraform in MacOS System
+### Install Terraform in Windows System
 
 To install terraform in windows, first we have to install choco package manager, first open the powershell or command prompt with administrator access and then execute the following commands
 
