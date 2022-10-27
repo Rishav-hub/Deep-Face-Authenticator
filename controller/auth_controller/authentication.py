@@ -121,8 +121,8 @@ async def login_for_access_token(response: Response, login) -> dict:
     """
 
     try:
-        userValidation = LoginValidation(login.email_id, login.password)
-        user: Optional[str] = userValidation.authenticateUserLogin()
+        user_validation = LoginValidation(login.email_id, login.password)
+        user: Optional[str] = user_validation.authenticate_user_login()
         if not user:
             return {"status": False, "uuid": None, "response": response}
         token_expires = timedelta(minutes=15)
@@ -162,7 +162,7 @@ async def authentication_page(request: Request):
 
 @router.post("/", response_class=JSONResponse)
 async def login(request: Request, login: Login):
-    """_summary_
+    """Route for User Login
 
     Args:
         request (Request): _description_
@@ -261,9 +261,9 @@ async def register_user(request: Request, register: Register):
         request.session["uuid"] = user.uuid_
 
         # Validation of the user input data to check the format of the data
-        userValidation = RegisterValidation(user)
+        user_registration = RegisterValidation(user)
 
-        validate_regitration = userValidation.validateRegistration()
+        validate_regitration = user_registration.validate_registration()
         if not validate_regitration["status"]:
             msg = validate_regitration["msg"]
             response = JSONResponse(
@@ -273,7 +273,7 @@ async def register_user(request: Request, register: Register):
             return response
 
         # Save user if the validation is successful
-        validation_status = userValidation.saveUser()
+        validation_status = user_registration.authenticate_user_registration()
 
         msg = "Registration Successful...Please Login to continue"
         response = JSONResponse(

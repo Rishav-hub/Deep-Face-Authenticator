@@ -36,7 +36,7 @@ class UserLoginEmbeddingValidation:
             raise e
 
     @staticmethod
-    def generateEmbedding(img_array: np.ndarray) -> np.ndarray:
+    def generate_embedding(img_array: np.ndarray) -> np.ndarray:
         """
         Generate embedding from image array"""
         try:
@@ -56,7 +56,7 @@ class UserLoginEmbeddingValidation:
             raise AppException(e, sys) from e
 
     @staticmethod
-    def generateEmbeddingList(files: List[Bytes]) -> List[np.ndarray]:
+    def generate_embedding_list(files: List[Bytes]) -> List[np.ndarray]:
         """
         Generate embedding list from image array
         """
@@ -66,12 +66,12 @@ class UserLoginEmbeddingValidation:
             # read image array
             img_array = np.array(img)
             # Detect faces
-            embed = UserLoginEmbeddingValidation.generateEmbedding(img_array)
+            embed = UserLoginEmbeddingValidation.generate_embedding(img_array)
             embedding_list.append(embed)
         return embedding_list
 
     @staticmethod
-    def averageEmbedding(embedding_list: List[np.ndarray]) -> List:
+    def average_embedding(embedding_list: List[np.ndarray]) -> List:
         """Function to calculate the average embedding of the list of embeddings
 
         Args:
@@ -102,7 +102,7 @@ class UserLoginEmbeddingValidation:
         except Exception as e:
             raise AppException(e, sys) from e
 
-    def compareEmbedding(self, files: bytes) -> bool:
+    def compare_embedding(self, files: bytes) -> bool:
         """Function to compare the embedding of the current image with the embedding of the database
 
         Args:
@@ -123,7 +123,7 @@ class UserLoginEmbeddingValidation:
                 # Generate embedding list
 
                 logging.info("Generating Embedding List .......")
-                embedding_list = UserLoginEmbeddingValidation.generateEmbeddingList(
+                embedding_list = UserLoginEmbeddingValidation.generate_embedding_list(
                     files
                 )
 
@@ -131,7 +131,7 @@ class UserLoginEmbeddingValidation:
                 # Calculate average embedding
 
                 logging.info("Calculating Average Embedding .......")
-                avg_embedding_list = UserLoginEmbeddingValidation.averageEmbedding(
+                avg_embedding_list = UserLoginEmbeddingValidation.average_embedding(
                     embedding_list
                 )
                 logging.info("Average Embedding calculated.......")
@@ -180,7 +180,7 @@ class UserRegisterEmbeddingValidation:
         self.uuid_ = uuid_
         self.user_embedding_data = UserEmbeddingData()
 
-    def saveEmbedding(self, files: bytes):
+    def save_embedding(self, files: bytes):
         """This function will generate embedding list and save it to database
         Args:
             files (dict): Bytes of images
@@ -189,8 +189,8 @@ class UserRegisterEmbeddingValidation:
             Embedding: saves the image to database
         """
         try:
-            embedding_list = UserLoginEmbeddingValidation.generateEmbeddingList(files)
-            avg_embedding_list = UserLoginEmbeddingValidation.averageEmbedding(
+            embedding_list = UserLoginEmbeddingValidation.generate_embedding_list(files)
+            avg_embedding_list = UserLoginEmbeddingValidation.average_embedding(
                 embedding_list
             )
             self.user_embedding_data.save_user_embedding(self.uuid_, avg_embedding_list)
