@@ -86,6 +86,15 @@ To create a container registry, click on create button and you will be redirecte
 
 ![image](https://user-images.githubusercontent.com/57321948/198311458-ef023bed-0501-426d-9ee2-9adefb853cb6.png)
 
+<img width="751" alt="image" src="https://user-images.githubusercontent.com/57321948/198834037-0952693f-ace3-4a29-a9cd-5afaf804e0d4.png">
+<img width="745" alt="image" src="https://user-images.githubusercontent.com/57321948/198834083-8bee6f45-9438-4505-b4f1-f657cdc9054f.png">
+<img width="541" alt="image" src="https://user-images.githubusercontent.com/57321948/198834183-a2cbebc2-d961-481f-84f6-7ca48277d801.png">
+<img width="488" alt="image" src="https://user-images.githubusercontent.com/57321948/198834236-0e46ba28-fc6f-44d6-93a8-af295a8812f0.png">
+<img width="717" alt="image" src="https://user-images.githubusercontent.com/57321948/198834302-505a6323-7c14-4d77-835d-5f35a0d4384f.png">
+<img width="480" alt="image" src="https://user-images.githubusercontent.com/57321948/198834352-4b3e24e8-67d7-40b6-8575-da2f9f5df970.png">
+<img width="728" alt="image" src="https://user-images.githubusercontent.com/57321948/198834392-e58ab3a1-fad2-4de0-b759-4bea5d86975b.png">
+<img width="308" alt="image" src="https://user-images.githubusercontent.com/57321948/198834474-4467b3a9-b719-4b46-9295-cdc0aacf3e58.png">
+
 
 
 In order to get these credentials, in the container registry page, you will see that in the settings tab column there is a option of access keys, for getting the REGISTRY_PASSWORD and REGISTRY_USERNAME, enable the admin user option and you will be able to username, password and password2. For REGISTRY_USERNAME use the username, and REGISTRY_PASSWORD use any of password and password2. 
