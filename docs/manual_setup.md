@@ -99,7 +99,14 @@ To create a container registry, click on create button and you will be redirecte
 
 In order to get these credentials, in the container registry page, you will see that in the settings tab column there is a option of access keys, for getting the REGISTRY_PASSWORD and REGISTRY_USERNAME, enable the admin user option and you will be able to username, password and password2. For REGISTRY_USERNAME use the username, and REGISTRY_PASSWORD use any of password and password2. 
 
+<img width="425" alt="image" src="https://user-images.githubusercontent.com/57321948/198865156-30492b40-ecd6-4ef3-becd-ae36b8b4939d.png">
+
+
 Store these credentials in github secrets. If we see the deployment workflow, there is secret name AZURE_LOGIN_SERVER which is login server present in the access key page. One more secret is REPO_NAME use {your_project_name}. 
+
+<img width="751" alt="image" src="https://user-images.githubusercontent.com/57321948/198865170-9bdc1eb8-3fd8-42eb-8059-eb2f7dc700e4.png">
+<img width="534" alt="image" src="https://user-images.githubusercontent.com/57321948/198865205-953334bc-c008-4a40-9e92-8e7c11c24dbf.png">
+
 
 ## Creating Azure Web App Service
 
