@@ -233,7 +233,7 @@ async def authentication_page(request: Request):
     """
     try:
         return templates.TemplateResponse("register.html",
-            status_code=status.HTTP_200_OK, content={"request": request,"message": "Registration Page"}
+            status_code=status.HTTP_200_OK, context={"request": request,"message": "Registration Page"}
         )
     except Exception as e:
         raise e
@@ -282,7 +282,7 @@ async def register_user(request: Request):
             msg = validate_regitration["msg"]
             response = templates.TemplateResponse("register.html",
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"request": request,"status": False, "msg": msg},
+                context={"request": request,"status": False, "msg": msg},
             )
             return response
 
@@ -299,7 +299,7 @@ async def register_user(request: Request):
     except Exception as e:
         response = templates.TemplateResponse("error.html",
                 status_code=status.HTTP_404_NOT_FOUND,
-                content={"request": request,"status": False},
+                context={"request": request,"status": False},
             )
         return response
 
@@ -320,10 +320,8 @@ async def logout(request: Request):
     try:
         msg = "You have been logged out"
         # response =  RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND, headers={"msg": msg})
+        response =  templates.TemplateResponse("login.html", {"request": request, "msg": msg})
         response.delete_cookie(key="access_token")
-        response = JSONResponse(
-            status_code=status.HTTP_200_OK, content={"status": True, "message": msg}
-        )
         return response
     except Exception as e:
         raise e
