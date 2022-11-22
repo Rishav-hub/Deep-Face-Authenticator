@@ -135,7 +135,7 @@ async def login_for_access_token(response: Response, login) -> dict:
     """
 
     try:
-        userValidation = LoginValidation(login.email_id, login.password)
+        userValidation = LoginValidation(login['email_id'], login['password'])
         user: Optional[str] = userValidation.authenticateUserLogin()
         if not user:
             return {"status": False, "uuid": None, "response": response}
@@ -195,6 +195,10 @@ async def login(request: Request):
         response = RedirectResponse(url="/application/", status_code=status.HTTP_302_FOUND)
 
         token_response = await login_for_access_token(response=response, login=login)
+        # print(token_response)
+
+        # Message popop @satya
+
         if not token_response["status"]:
             msg = "Incorrect Username and password"
             return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
@@ -278,6 +282,9 @@ async def register_user(request: Request):
         userValidation = RegisterValidation(user)
 
         validate_regitration = userValidation.validateRegistration()
+
+        # Popop to display error message when validation is failed @satya
+
         if not validate_regitration["status"]:
             msg = validate_regitration["msg"]
             response = templates.TemplateResponse("register.html",

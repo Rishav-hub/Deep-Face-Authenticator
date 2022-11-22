@@ -23,7 +23,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 @router.get("/", response_class=HTMLResponse)
 async def application(request: Request):
-    return templates.TemplateResponse("error.html", {"request": request})
+    return templates.TemplateResponse("login_embedding.html", {"request": request})
 
 @router.post("/")
 async def loginEmbedding(
@@ -65,12 +65,15 @@ async def loginEmbedding(
             return response
     except Exception as e:
         msg = "Error in Login Embedding in Database"
-        response = JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={"status": False, "message": msg},
-        )
+        response = templates.TemplateResponse("error.html",
+                status_code=status.HTTP_404_NOT_FOUND,
+                context={"request": request,"status": False, "msg": msg},
+            )
         return response
 
+@router.get("/register_embedding", response_class=HTMLResponse)
+async def application(request: Request):
+    return templates.TemplateResponse("register_embedding.html", {"request": request})
 
 @router.post("/register_embedding")
 async def registerEmbedding(
@@ -104,8 +107,8 @@ async def registerEmbedding(
         return response
     except Exception as e:
         msg = "Error in Storing Embedding in Database"
-        response = JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={"status": True, "message": msg},
-        )
+        response = templates.TemplateResponse("error.html",
+                status_code=status.HTTP_404_NOT_FOUND,
+                context={"request": request,"status": False, "msg": msg},
+            )
         return response

@@ -70,6 +70,7 @@ class LoginValidation:
 
         """This checks all the validation conditions for the user registration
         """
+        print(self.validate())
         if len(self.validate()) != 0:
             return {"status": False, "msg": self.validate()}
         return {"status": True}
@@ -83,7 +84,7 @@ class LoginValidation:
             password (str): _description_
         """
         try:
-
+            print(self.validateLogin())
             logging.info("Authenticating the user details.....")
             if self.validateLogin()["status"]:
                 userdata = UserData()
