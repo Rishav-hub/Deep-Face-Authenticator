@@ -1,67 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-  	<title>Face Authentication System</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='application/css/login_style.css') }}">
 	
-	<link rel="stylesheet" href="{{ url_for('static', path='/application/css/login_style.css') }}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+<body>
+    <div class="liquid">
+        <h2>Face Authenticator</h2>
+        <h2>Face Authenticator</h2>
+        <h2>Face Authenticator</h2>
+        <h2>Face Authenticator</h2>
+    </div>
+    <div class="container">
+        <div class="form-container sign-in-form">
+            <div class="form-box sign-in-box">
+                <h2>Login</h2>
+                <form action= "/auth" method="post">
+                    <div class="field">
+                        <i class="uil uil-at"></i>
+                        <input type="email" placeholder="Email Id" name="email"  required>
+                    </div>
+                    <div class="field">
+                        <i class="uil uil-lock-alt"></i>
+                        <input class="password-input" type="password" placeholder="Password" name="password" required>
+                        <div class="eye-btn"><i class="uil uil-eye-slash"></i></div>
+                    </div>
+                    <div class="forgot-link">
+                        <a href="">Forgot Password?</a>
+                    </div>
+                    <input type="submit" class="submit-btn" value="Login">
+                </form>
+                <div class="login-options">
+                    <p class="text">Or, login with ...</p>
+                    <div class="other-logins">
+                        <a href=""><img src="../static/application/images/google.png"></a>
+                        <a href=""><img src="../static/application/images/fb.png"></a>
+                        <a href=""><img src="../static/application/images/apple.png"></a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="imgBox sign-in-imgBox">
+                <div class="sliding-link">
+                    <p>Don't have an account</p>
+                    <span class="sign-up-btn">Sign up</span>
+                </div>
+                <img src="../static/application/images/signin.jpg">
+            </div>
+        </div>
+    
+        <div class="form-container sign-up-form">
+            <div class="imgBox sign-up-imgBox">
+                <div class="sliding-link">
+                    <p>Already a member ?</p>
+                    <span class="sign-in-btn">Sign in</span>
+                </div>
+                <img src="../static/application/images/signup.jpg">
+            </div>
+    
+            <div class="form-box sign-up-box">
+                <h2>Sign up</h2>
+                
+                <form method= "POST" action="/auth/register">
+					<div class="field">
+                        <i class="uil uil-unamused"></i>
+                        <input type="text" placeholder="Name" name="name" required>
+                    </div>
+					<div class="field">
+                        <i class="uil uil-user"></i>
+                        <input type="text" placeholder="Username" name="username" required>
+                    </div>
+                    <div class="field">
+                        <i class="uil uil-at"></i>
+                        <input type="email" placeholder="Email Id" name="email" required>
+                    </div>
+					<div class="field">
+                        <i class="uil uil-phone"></i>
+                        <input type="number" placeholder="Phone Number" name="ph_no" required>
+                    </div>
+                  
+                    <div class="field">
+                        <i class="uil uil-lock-alt"></i>
+                        <input class="password-input" type="password" placeholder="Password" name="password1" required>
+                    </div>
+                    <div class="field">
+                        <i class="uil uil-lock-access"></i>
+                        <input class="password-input" type="password" placeholder="Confirm Password " name="password2" required>
+                    </div>
+                    <input type="submit" class="submit-btn" value="Sign up">
+                </form>
+              
+            </div>
+    
+            
+    
+        </div>
+    </div>
+    
 
-	</head>
-	<body class="img js-fullheight" style="background-image: url(/static/application//assets/bg.jpg);">
-	<section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Login</h2>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-md-6 col-lg-4">
-					<div class="login-wrap p-0">
-		      	<h3 class="mb-4 text-center">Have an account?</h3>
-		      	<form method="POST" class="signin-form" action= "/auth">
-		      		<div class="form-group">
-		      			<input type="text" class="form-control" placeholder="email" name= 'email' required>
-		      		</div>
-	            <div class="form-group">
-	              <input id="password-field" type="password" class="form-control" placeholder="password" name= 'password' required>
-	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-	            </div>
-	            <div class="form-group">
-	            	<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
-	            </div>
-	            <div class="form-group d-md-flex">
-	            	<!-- <div class="w-50">
-		            	<label class="checkbox-wrap checkbox-primary">Remember Me
-									  <input type="checkbox" checked>
-									  <span class="checkmark"></span>
-									</label>
-								</div> -->
-								<div class="form-control btn btn-primary submit px-3">
-									<a href="register" style="color: rgb(8, 8, 8)"> Sign up</a>
-								</div>
-	            </div>
-	          </form>
-	          <!-- <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
-	          <div class="social d-flex text-center">
-	          	<a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
-	          	<a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
-	          </div> -->
-		      <!-- </div>
-				</div> -->
-			</div>
-		</div>
-	</section>
 
-	<script   src="{{ url_for('static', path='/application/js/jquery.min.js') }}"></script>
-	<script src="{{ url_for('static', path='/application/js/popper.js') }}"></script>
-	<script src="{{ url_for('static', path='/application/js/bootstrap.min.js') }}"></script>
-	<script src="{{ url_for('static', path='/application/js/main.js') }}"></script>
-	</body>
+    <script src = "{{url_for('static', path='/application/js/index.js')}}"></script>
+
+</body>
 </html>
-
