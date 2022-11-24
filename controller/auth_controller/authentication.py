@@ -192,7 +192,7 @@ async def login(request: Request):
         }
 
         msg = "Login Successful"
-        response = RedirectResponse(url="/application/", status_code=status.HTTP_302_FOUND)
+        response = RedirectResponse(url="/application/register_embedding", status_code=status.HTTP_302_FOUND)
 
         token_response = await login_for_access_token(response=response, login=login)
         # print(token_response)
@@ -205,6 +205,7 @@ async def login(request: Request):
        
         response.headers["uuid"] = token_response["uuid"]
 
+        #return templates.TemplateResponse("register_embedding.html",{"uuid":token_response["uuid"]})
         return response
 
     except HTTPException:

@@ -1,5 +1,5 @@
-import os
-from typing import List
+import os,io,base64
+from typing import List, Optional
 
 from fastapi import APIRouter, File, Request
 from starlette import status
@@ -20,6 +20,20 @@ router = APIRouter(
 templates = Jinja2Templates(directory= os.path.join(os.getcwd(), "templates"))
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+class ImageForm:
+    def __init__(self, request: Request):
+        self.request: Request = request
+        self.image1: Optional[str] = None
+        self.image2: Optional[str] = None
+        self.image3: Optional[str] = None
+    
+    async def create_oauth_form(self):
+        form = await self.request.form()
+        self.image1 = form.get("image1")
+        self.image2 = form.get("image2")
+        self.image3 = form.get("image3")
+     
 
 @router.get("/", response_class=HTMLResponse)
 async def application(request: Request):
@@ -77,8 +91,7 @@ async def application(request: Request):
 
 @router.post("/register_embedding")
 async def registerEmbedding(
-    request: Request,
-    files: List[bytes] = File(description="Multiple files as UploadFile"),
+    request: Request
 ):
     """This function is used to get the embedding of the user while register
 
@@ -92,6 +105,18 @@ async def registerEmbedding(
 
     try:
         # Get the UUID from the session
+        form = ImageForm(request)
+        await form.create_oauth_form()
+        files = []
+        base64_images = [form.image1,form.image2,form.image3]
+        for image in base64_images:
+            strip_metadata = image[image.find(",")+1:]
+            decode_base64 = base64.b64decode(strip_metadata)
+            image_bytes = io.BytesIO(decode_base64)
+            bytes_value = image_bytes.getvalue()
+            files.append(bytes_value)
+    
+
         uuid = request.session.get("uuid")
         user_embedding_validation = UserRegisterEmbeddingValidation(uuid)
 
