@@ -7,6 +7,7 @@ from datetime import datetime
 from datetime import timedelta
 from jose import jwt, JWTError
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
 from face_auth.entity.user import User
 from face_auth.business_val.user_val import RegisterValidation, LoginValidation
@@ -167,7 +168,8 @@ async def authentication_page(request: Request):
         Response: _description_
     """
     try:
-        return templates.TemplateResponse("login.html", {"request": request})
+        return templates.TemplateResponse("login.html", 
+        context={"request":request,"msg":"login_page","status_code":status.HTTP_200_OK})
     except Exception as e:
         raise e
 
@@ -195,17 +197,16 @@ async def login(request: Request):
         response = RedirectResponse(url="/application/register_embedding", status_code=status.HTTP_302_FOUND)
 
         token_response = await login_for_access_token(response=response, login=login)
-        # print(token_response)
-
-        # Message popop @satya
 
         if not token_response["status"]:
             msg = "Incorrect Username and password"
-            return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+            return templates.TemplateResponse("login.html", 
+            context={"request": request, "msg": msg,"status_code":status.HTTP_404_NOT_FOUND},
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            )
        
         response.headers["uuid"] = token_response["uuid"]
 
-        #return templates.TemplateResponse("register_embedding.html",{"uuid":token_response["uuid"]})
         return response
 
     except HTTPException:
@@ -237,8 +238,9 @@ async def authentication_page(request: Request):
         _type_: _description_
     """
     try:
-        return templates.TemplateResponse("register.html",
-            status_code=status.HTTP_200_OK, context={"request": request,"message": "Registration Page"}
+        return templates.TemplateResponse("login.html",
+            status_code=status.HTTP_200_OK, 
+            context={"request": request,"message": "Registration Page"}
         )
     except Exception as e:
         raise e
@@ -284,13 +286,11 @@ async def register_user(request: Request):
 
         validate_regitration = userValidation.validateRegistration()
 
-        # Popop to display error message when validation is failed @satya
-
         if not validate_regitration["status"]:
             msg = validate_regitration["msg"]
-            response = templates.TemplateResponse("register.html",
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                context={"request": request,"status": False, "msg": msg},
+            response = templates.TemplateResponse("login.html",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            context={"request": request,"msg":msg,"status_code":status.HTTP_404_NOT_FOUND}
             )
             return response
 

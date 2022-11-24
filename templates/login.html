@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', path='application/css/login_style.css') }}">
 	
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>  
 </head>
 <body>
     <div class="liquid">
@@ -15,6 +16,14 @@
         <h2>Face Authenticator</h2>
         <h2>Face Authenticator</h2>
     </div>
+
+    {% if msg %}
+    <input type="hidden"  id='error_msg' value="{{msg}}">
+    {% endif %}
+    {% if status_code %}
+    <input type="hidden"  id='status_code' value="{{status_code}}">
+    {% endif %}
+    
     <div class="container">
         <div class="form-container sign-in-form">
             <div class="form-box sign-in-box">
@@ -65,31 +74,31 @@
             <div class="form-box sign-up-box">
                 <h2>Sign up</h2>
                 
-                <form method= "POST" action="/auth/register">
+                <form method= "POST" action="/auth/register" id="register_form">
 					<div class="field">
                         <i class="uil uil-unamused"></i>
-                        <input type="text" placeholder="Name" name="name" required>
+                        <input type="text" placeholder="Name" name="name" value="test" required>
                     </div>
 					<div class="field">
                         <i class="uil uil-user"></i>
-                        <input type="text" placeholder="Username" name="username" required>
+                        <input type="text" placeholder="Username" name="username" value="test" required>
                     </div>
                     <div class="field">
                         <i class="uil uil-at"></i>
-                        <input type="email" placeholder="Email Id" name="email" required>
+                        <input type="email" placeholder="Email Id" name="email" value="satya@ineuron.ai" required>
                     </div>
 					<div class="field">
                         <i class="uil uil-phone"></i>
-                        <input type="number" placeholder="Phone Number" name="ph_no" required>
+                        <input type="number" placeholder="Phone Number" name="ph_no" value="8950941941" required>
                     </div>
                   
                     <div class="field">
                         <i class="uil uil-lock-alt"></i>
-                        <input class="password-input" type="password" placeholder="Password" name="password1" required>
+                        <input class="password-input" type="password" placeholder="Password" value="test@12345" name="password1" required>
                     </div>
                     <div class="field">
                         <i class="uil uil-lock-access"></i>
-                        <input class="password-input" type="password" placeholder="Confirm Password " name="password2" required>
+                        <input class="password-input" type="password" placeholder="Confirm Password " value="test@12345" name="password2" required>
                     </div>
                     <input type="submit" class="submit-btn" value="Sign up">
                 </form>
@@ -101,9 +110,10 @@
         </div>
     </div>
     
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src = "{{url_for('static', path='/application/js/index.js')}}"></script>
+
 
 </body>
 </html>
