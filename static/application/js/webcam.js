@@ -42,11 +42,21 @@ if(imagesObject.length > 0){
 
 document.getElementById("state").innerHTML = imagesObject.length + " image" + ((imagesObject.length > 1) ? "s" : "") + " stored in your browser";
 
-document.getElementById("deleteImgs").style.display = "inline";
+
 
 if (checkImages(imagesObject)){
   document.getElementById('snapDiv').style.display = 'none';
   document.getElementById("embeddingsBtn").style.display = "block";
+  Swal.fire({
+    title: '<strong>Only 3 snaps allowed</strong>',
+    icon: 'info',
+    showCloseButton: true,
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText:
+      '<i class="fa fa-thumbs-up"></i> Great!',
+    confirmButtonAriaLabel: 'Thumbs up, great!',
+  })
 }
 else{
   document.getElementById('snapDiv').style.display = 'block';
@@ -56,7 +66,6 @@ console.log("ARR LENGTH ",checkImages(imagesObject))
 
 } else {
 document.getElementById("state").innerHTML = "No images stored in your browser.";
-document.getElementById("deleteImgs").style.display = "none";
 }
 }
 
@@ -96,13 +105,20 @@ images.forEach(displayImgData);
 }
 
 function post() {
+  
+  Swal.fire({
+    imageUrl: 'https://i.gifer.com/DzUh.gif',
+    imageWidth: 400,
+    imageHeight: 200,
+    showConfirmButton: false
+  })
+  
   var images = JSON.parse(localStorage.getItem("images"))
   var params = {}
   for (var i = 0 ; i < images.length; i++) {
     var strImage = images[i].replace(/^data:image\/[a-z]+;base64,/, "");
     params["image" + (i+1)] = strImage;
   }
-  console.log(params)
   url='/application/register_embedding'
   const form = document.createElement('form');
   form.method = 'POST';
@@ -122,9 +138,22 @@ function post() {
   document.body.appendChild(form);
   form.submit();
 }
-
-
+const errorElement = document.querySelector('#error_msg');
+const codeElement = document.querySelector('#status_code');
+/*console.log(codeElement.value)
+if(codeElement.value == 200){
+  Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: errorElement.value,
+    showConfirmButton: false,
+    timer: 1500
+  })
+}*/
 
 document.getElementById('deleteImgs').addEventListener("click", deleteImages);
 //loadFromLocalStorage();
 document.getElementById("embeddingsBtn").style.display = "none";
+
+ 
+  
