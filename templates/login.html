@@ -1,119 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='application/css/login_style.css') }}">
-	
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    
-</head>
-<body>
-    <div class="liquid">
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-    </div>
-
-    {% if msg %}
-    <input type="hidden"  id='error_msg' value="{{msg}}">
-    {% endif %}
-    {% if status_code %}
-    <input type="hidden"  id='status_code' value="{{status_code}}">
-    {% endif %}
-    
-    <div class="container">
-        <div class="form-container sign-in-form">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <link rel="stylesheet" href="{{ url_for('static', path='application/css/login_style.css') }}">
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+   </head>
+   <body>
+      <div class="liquid">
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+      </div>
+      {% if msg %}
+      <input type="hidden"  id='error_msg' value="{{msg}}">
+      {% endif %}
+      {% if status_code %}
+      <input type="hidden"  id='status_code' value="{{status_code}}">
+      {% endif %}
+      <div class="container">
+         <div class="form-container sign-in-form">
             <div class="form-box sign-in-box">
-                <h2>Login</h2>
-                <form action= "/auth" method="post">
-                    <div class="field">
-                        <i class="uil uil-at"></i>
-                        <input type="email" placeholder="Email Id" name="email"  required>
-                    </div>
-                    <div class="field">
-                        <i class="uil uil-lock-alt"></i>
-                        <input class="password-input" type="password" placeholder="Password" name="password" required>
-                        <div class="eye-btn"><i class="uil uil-eye-slash"></i></div>
-                    </div>
-                    <div class="forgot-link">
-                        <a href="">Forgot Password?</a>
-                    </div>
-                    <input type="submit" class="submit-btn" value="Login">
-                </form>
-                <div class="login-options">
-                    <p class="text">Or, login with ...</p>
-                    <div class="other-logins">
-                        <a href=""><img src="../static/application/images/google.png"></a>
-                        <a href=""><img src="../static/application/images/fb.png"></a>
-                        <a href=""><img src="../static/application/images/apple.png"></a>
-                    </div>
-                </div>
+               <h2>Login</h2>
+               <form action= "/auth" method="post">
+                  <div class="field">
+                     <i class="uil uil-at"></i>
+                     <input type="email" placeholder="Email Id" name="email"  required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-lock-alt"></i>
+                     <input class="password-input" type="password" placeholder="Password" name="password" required>
+                     <div class="eye-btn"><i class="uil uil-eye-slash"></i></div>
+                  </div>
+                  <div class="forgot-link">
+                     <a href="">Forgot Password?</a>
+                  </div>
+                  <input type="submit" class="submit-btn" value="Login">
+               </form>
+               <div class="login-options">
+                  <p class="text">Or, login with ...</p>
+                  <div class="other-logins">
+                     <a href=""><img src="../static/application/images/google.png"></a>
+                     <a href=""><img src="../static/application/images/fb.png"></a>
+                     <a href=""><img src="../static/application/images/apple.png"></a>
+                  </div>
+               </div>
             </div>
-    
             <div class="imgBox sign-in-imgBox">
-                <div class="sliding-link">
-                    <p>Don't have an account</p>
-                    <span class="sign-up-btn">Sign up</span>
-                </div>
-                <img src="../static/application/images/signin.jpg">
+               <div class="sliding-link">
+                  <p>Don't have an account</p>
+                  <span class="sign-up-btn">Sign up</span>
+               </div>
+               <img src="../static/application/images/signin.jpg">
             </div>
-        </div>
-    
-        <div class="form-container sign-up-form">
+         </div>
+         <div class="form-container sign-up-form">
             <div class="imgBox sign-up-imgBox">
-                <div class="sliding-link">
-                    <p>Already a member ?</p>
-                    <span class="sign-in-btn">Sign in</span>
-                </div>
-                <img src="../static/application/images/signup.jpg">
+               <div class="sliding-link">
+                  <p>Already a member ?</p>
+                  <span class="sign-in-btn">Sign in</span>
+               </div>
+               <img src="../static/application/images/signup.jpg">
             </div>
-    
             <div class="form-box sign-up-box">
-                <h2>Sign up</h2>
-                
-                <form method= "POST" action="/auth/register" id="register_form">
-					<div class="field">
-                        <i class="uil uil-unamused"></i>
-                        <input type="text" placeholder="Name" name="name" value="test" required>
-                    </div>
-					<div class="field">
-                        <i class="uil uil-user"></i>
-                        <input type="text" placeholder="Username" name="username" value="test" required>
-                    </div>
-                    <div class="field">
-                        <i class="uil uil-at"></i>
-                        <input type="email" placeholder="Email Id" name="email" value="satya@ineuron.ai" required>
-                    </div>
-					<div class="field">
-                        <i class="uil uil-phone"></i>
-                        <input type="number" placeholder="Phone Number" name="ph_no" value="8950941941" required>
-                    </div>
-                  
-                    <div class="field">
-                        <i class="uil uil-lock-alt"></i>
-                        <input class="password-input" type="password" placeholder="Password" value="test@12345" name="password1" required>
-                    </div>
-                    <div class="field">
-                        <i class="uil uil-lock-access"></i>
-                        <input class="password-input" type="password" placeholder="Confirm Password " value="test@12345" name="password2" required>
-                    </div>
-                    <input type="submit" class="submit-btn" value="Sign up">
-                </form>
-              
+               <h2>Sign up</h2>
+               <form method= "POST" action="/auth/register" id="register_form">
+                  <div class="field">
+                     <i class="uil uil-unamused"></i>
+                     <input type="text" placeholder="Name" name="name" value="test" required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-user"></i>
+                     <input type="text" placeholder="Username" name="username" value="test" required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-at"></i>
+                     <input type="email" placeholder="Email Id" name="email" value="satya@ineuron.ai" required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-phone"></i>
+                     <input type="number" placeholder="Phone Number" name="ph_no" value="8950941941" required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-lock-alt"></i>
+                     <input class="password-input" type="password" placeholder="Password" value="test@12345" name="password1" required>
+                  </div>
+                  <div class="field">
+                     <i class="uil uil-lock-access"></i>
+                     <input class="password-input" type="password" placeholder="Confirm Password " value="test@12345" name="password2" required>
+                  </div>
+                  <input type="submit" class="submit-btn" value="Sign up">
+               </form>
             </div>
-    
-            
-    
-        </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src = "{{url_for('static', path='/application/js/index.js')}}"></script>
-
-
-</body>
+         </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+      <script src = "{{url_for('static', path='/application/js/index.js')}}"></script>
+   </body>
 </html>

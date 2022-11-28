@@ -1,88 +1,88 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
-    <title>Face Authenticator</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='application/css/webcam.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-</head>
-<body style=" margin-top:20px;background:#DCDCDC;" onload="configure();">
-    <div class="liquid">
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-        <h2>Face Authenticator</h2>
-    </div>
-    {% if msg %}
-    <input type="hidden" id='error_msg' value="{{msg}}">
-    {% endif %}
-    {% if status_code %}
-    <input type="hidden" id='status_code' value="{{status_code}}">
-    {% endif %}
-    
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 static">
-            <div class="profile-card">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo">
-            	<h5><a href="#" class="text-white">Hello, John Doe</a></h5>
-            	<a href="#" class="text-white"><i class="fa fa-user"></i> Welcome!! </a>
-            </div><!--profile card ends-->
-            <ul class="nav-news-feed">
-            <li><i class="fa fa-home" aria-hidden="true" style="color: #8dc63f"></i><div><a href="/auth">Go Back Home</a></div></li>
-              <li><i class="fa fa-trash" aria-hidden="true" style="color: red;"></i><div><a href="#" id="deleteImgs">Delete Images</a></div></li>
-              <li><i class="fa fa-refresh" aria-hidden="true" style="color: #662d91;"></i><div><a href="/application/register_embedding">Refresh</a></div></li>
-              <li><i class="fa fa-sign-out pull-right" style="color:orange;"></i><div><a href="/auth/logout">Logout</a></div></li>
-              <li>
-                <a href="#" class="btn btn-primary text-center btn-block" id="embeddingsBtn" onClick='post()'>GENERATE EMBEDDINGS</a>
-            </li>
-            </ul><!--news-feed links ends-->
-        </div>
-        <div class="col-md-8 static">
-                <div class="card">
-                    <div class="card">
-                        <div class="camera_div">
-                    
-                            <div class="camera">
-                                <div id="my_camera" >
-                        
-                                </div>
-                                <div class="camera-button" id="snapDiv">
-                                    <ion-icon name="camera-outline" onClick="take_snapshot()"></ion-icon>
-                                </div>
-                            </div>
-                        
-                            <p id="state">No images stored in your browser.</p>
-                            
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+      <title>Face Authenticator</title>
+      <link rel="stylesheet" href="{{ url_for('static', path='application/css/webcam.css') }}">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+         crossorigin="anonymous">
+      <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+   </head>
+   <body style=" margin-top:20px;background:#DCDCDC;" onload="configure();">
+      <div class="liquid">
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+         <h2>Face Authenticator</h2>
+      </div>
+      {% if msg %}
+      <input type="hidden" id='error_msg' value="{{msg}}">
+      {% endif %}
+      {% if status_code %}
+      <input type="hidden" id='status_code' value="{{status_code}}">
+      {% endif %}
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-4 static">
+               <div class="profile-card">
+                  <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo">
+                  <h5><a href="#" class="text-white">Hello, John Doe</a></h5>
+                  <a href="#" class="text-white"><i class="fa fa-user"></i> Welcome!! </a>
+               </div>
+               <!--profile card ends-->
+               <ul class="nav-news-feed">
+                  <li>
+                     <i class="fa fa-home" aria-hidden="true" style="color: #8dc63f"></i>
+                     <div><a href="/auth">Go Back Home</a></div>
+                  </li>
+                  <li>
+                     <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>
+                     <div><a href="#" id="deleteImgs">Delete Images</a></div>
+                  </li>
+                  <li>
+                     <i class="fa fa-spinner fa-spin" style="color: #662d91;"></i>
+                     <div><a href="/application/register_embedding">Refresh</a></div>
+                  </li>
+                  <li>
+                     <i class="fa fa-sign-out pull-right" style="color:orange;"></i>
+                     <div><a href="/auth/logout">Logout</a></div>
+                  </li>
+                  <li>
+                     <a href="#" class="btn btn-primary text-center btn-block" id="embeddingsBtn" onClick='post()'>GENERATE EMBEDDINGS</a>
+                  </li>
+               </ul>
+               <!--news-feed links ends-->
+            </div>
+            <div class="col-md-8 static">
+               <div class="card">
+                  <div class="card">
+                     <div class="camera_div">
+                        <div class="camera">
+                           <div id="my_camera" >
+                           </div>
+                           <div class="camera-button" id="snapDiv">
+                              <ion-icon name="camera-outline" onClick="take_snapshot()"></ion-icon>
+                           </div>
+                        </div>
+                        <p id="state">No images stored in your browser.</p>
                         <ul id="list">
                         </ul>
-                        
-                        
                         <!-- <a href="#" id="deleteImgs">Delete Images</a> -->
-                        
-                        
-                        
-                            
-                        </div>
-                        </div>
-                        </div>
-        </div>
-	</div>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.14/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script type="text/javascript" src="../static/application/js/webcam.min.js"></script>
-    <script type="text/javascript" src="../static/application/js/webcam.js"></script>
-      
-</body>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.14/dist/sweetalert2.all.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+      <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+      <script type="text/javascript" src="../static/application/js/webcam.min.js"></script>
+      <script type="text/javascript" src="../static/application/js/webcam.js"></script>
+   </body>
 </html>

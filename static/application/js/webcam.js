@@ -1,142 +1,142 @@
 var imagesObject = [];
-function configure(){
-Webcam.set(
-  {
-    width:500,
-    height:450,
-    dest_width: 500,
-    dest_height: 450,
-    image_format :'jpeg',
-    jpeg_quality : 90
-})
-Webcam.attach("#my_camera");
+
+function configure() {
+    Webcam.set({
+        width: 500,
+        height: 450,
+        dest_width: 500,
+        dest_height: 450,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    })
+    Webcam.attach("#my_camera");
 }
 
 function take_snapshot() {
-// take snapshot and get image data
-document.getElementById('my_camera').classList.toggle("effect");
+    // take snapshot and get image data
+    document.getElementById('my_camera').classList.toggle("effect");
 
-document.getElementById("embeddingsBtn").style.display = "none";
+    document.getElementById("embeddingsBtn").style.display = "none";
 
-Webcam.snap( function(data_uri) {
-   // display results in page
-   
-   displayImgData(data_uri);
-   addImage(data_uri)
- });
-}
-function addImage(imgData){
-imagesObject.push(imgData);
-displayNumberOfImgs();
-localStorage.setItem("images", JSON.stringify(imagesObject));
+    Webcam.snap(function(data_uri) {
+        // display results in page
+
+        displayImgData(data_uri);
+        addImage(data_uri)
+    });
 }
 
-function displayImgData(imgData){
-var span = document.createElement('li');
-span.innerHTML = '<img class="thumb" src="' + imgData + '"/>';
-document.getElementById('list').insertBefore(span, null);
+function addImage(imgData) {
+    imagesObject.push(imgData);
+    displayNumberOfImgs();
+    localStorage.setItem("images", JSON.stringify(imagesObject));
 }
 
-function displayNumberOfImgs(){
-if(imagesObject.length > 0){
-
-document.getElementById("state").innerHTML = imagesObject.length + " image" + ((imagesObject.length > 1) ? "s" : "") + " stored in your browser";
-
-
-
-if (checkImages(imagesObject)){
-  document.getElementById('snapDiv').style.display = 'none';
-  document.getElementById("embeddingsBtn").style.display = "block";
-  Swal.fire({
-    title: '<strong>Only 3 snaps allowed</strong>',
-    icon: 'info',
-    showCloseButton: true,
-    showCancelButton: true,
-    focusConfirm: false,
-    confirmButtonText:
-      '<i class="fa fa-thumbs-up"></i> Great!',
-    confirmButtonAriaLabel: 'Thumbs up, great!',
-  })
-}
-else{
-  document.getElementById('snapDiv').style.display = 'block';
+function displayImgData(imgData) {
+    var span = document.createElement('li');
+    span.innerHTML = '<img class="thumb" src="' + imgData + '"/>';
+    document.getElementById('list').insertBefore(span, null);
 }
 
-console.log("ARR LENGTH ",checkImages(imagesObject))
+function displayNumberOfImgs() {
+    if (imagesObject.length > 0) {
 
-} else {
-document.getElementById("state").innerHTML = "No images stored in your browser.";
-}
+        document.getElementById("state").innerHTML = imagesObject.length + " image" + ((imagesObject.length > 1) ? "s" : "") + " stored in your browser";
+
+
+
+        if (checkImages(imagesObject)) {
+            document.getElementById('snapDiv').style.display = 'none';
+            document.getElementById("embeddingsBtn").style.display = "block";
+            Swal.fire({
+                title: '<strong>Only 3 snaps allowed</strong>',
+                icon: 'info',
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
+                confirmButtonAriaLabel: 'Thumbs up, great!',
+            })
+        } else {
+            document.getElementById('snapDiv').style.display = 'block';
+        }
+
+        console.log("ARR LENGTH ", checkImages(imagesObject))
+
+    } else {
+        document.getElementById("state").innerHTML = "No images stored in your browser.";
+    }
 }
 
 //To check if an array is empty using javascript
 function checkImages(array) {
-  //If it's not an array, return FALSE.
-  if (!Array.isArray(array)) {
-      return FALSE;
-  }
-  //If it is an array, check its length property
-  if (array.length == 3) {
-      //Return TRUE if the array is empty
-      return true;
-  }
-  //Otherwise, return FALSE.
-  return false;
+    //If it's not an array, return FALSE.
+    if (!Array.isArray(array)) {
+        return FALSE;
+    }
+    //If it is an array, check its length property
+    if (array.length == 3) {
+        //Return TRUE if the array is empty
+        return true;
+    }
+    //Otherwise, return FALSE.
+    return false;
 }
 
-function deleteImages(){
-imagesObject = [];
-localStorage.removeItem("images");
-displayNumberOfImgs()
-document.getElementById('list').innerHTML = "";
-document.getElementById("embeddingsBtn").style.display = "none";
+function deleteImages() {
+    imagesObject = [];
+    localStorage.removeItem("images");
+    displayNumberOfImgs()
+    document.getElementById('list').innerHTML = "";
+    document.getElementById("embeddingsBtn").style.display = "none";
 }
-function loadFromLocalStorage(){
-var images = JSON.parse(localStorage.getItem("images"))
 
-console.log(images)
+function loadFromLocalStorage() {
+    var images = JSON.parse(localStorage.getItem("images"))
 
-if(images && images.length > 0){
-imagesObject = images;
+    console.log(images)
 
-displayNumberOfImgs();
-images.forEach(displayImgData);
-}
+    if (images && images.length > 0) {
+        imagesObject = images;
+
+        displayNumberOfImgs();
+        images.forEach(displayImgData);
+    }
 }
 
 function post() {
-  
-  Swal.fire({
-    imageUrl: 'https://i.gifer.com/DzUh.gif',
-    imageWidth: 400,
-    imageHeight: 200,
-    showConfirmButton: false
-  })
-  
-  var images = JSON.parse(localStorage.getItem("images"))
-  var params = {}
-  for (var i = 0 ; i < images.length; i++) {
-    var strImage = images[i].replace(/^data:image\/[a-z]+;base64,/, "");
-    params["image" + (i+1)] = strImage;
-  }
-  url='/application/register_embedding'
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = url;
-  
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.type = 'hidden';
-      hiddenField.name = key;
-      hiddenField.value = params[key];
 
-      form.appendChild(hiddenField);
+    Swal.fire({
+        imageUrl: 'https://i.gifer.com/DzUh.gif',
+        imageWidth: 400,
+        imageHeight: 200,
+        showConfirmButton: false
+    })
+
+    var images = JSON.parse(localStorage.getItem("images"))
+    var params = {}
+    for (var i = 0; i < images.length; i++) {
+        var strImage = images[i].replace(/^data:image\/[a-z]+;base64,/, "");
+        params["image" + (i + 1)] = strImage;
     }
-  }
+    url = '/application/register_embedding'
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
 
-  document.body.appendChild(form);
-  form.submit();
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = params[key];
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }
 const errorElement = document.querySelector('#error_msg');
 const codeElement = document.querySelector('#status_code');
@@ -154,6 +154,3 @@ if(codeElement.value == 200){
 document.getElementById('deleteImgs').addEventListener("click", deleteImages);
 //loadFromLocalStorage();
 document.getElementById("embeddingsBtn").style.display = "none";
-
- 
-  
