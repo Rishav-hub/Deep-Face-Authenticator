@@ -104,8 +104,9 @@ function loadFromLocalStorage() {
     }
 }
 
-function post() {
+function post(value) {
 
+    
     Swal.fire({
         imageUrl: 'https://i.gifer.com/DzUh.gif',
         imageWidth: 400,
@@ -119,7 +120,12 @@ function post() {
         var strImage = images[i].replace(/^data:image\/[a-z]+;base64,/, "");
         params["image" + (i + 1)] = strImage;
     }
-    url = '/application/register_embedding'
+    if(value=='login'){
+        url = '/application/'
+    }
+    else{
+        url = '/application/register_embedding'
+    }
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = url;

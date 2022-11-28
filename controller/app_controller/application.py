@@ -41,8 +41,7 @@ async def application(request: Request):
 
 @router.post("/")
 async def loginEmbedding(
-    request: Request,
-    files: List[bytes] = File(description="Multiple files as UploadFile"),
+    request: Request
 ):
     """This function is used to get the embedding of the user while login
 
@@ -55,11 +54,26 @@ async def loginEmbedding(
     """
 
     try:
+        
         user = await get_current_user(request)
+        print(user)
         if user is None:
             return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
         user_embedding_validation = UserLoginEmbeddingValidation(user["uuid"])
+
+        form = ImageForm(request)
+        await form.create_oauth_form()
+        files = []
+        base64_images = [form.image1,form.image2,form.image3]
+        for image in base64_images:
+            strip_metadata = image[image.find(",")+1:]
+            decode_base64 = base64.b64decode(strip_metadata)
+            image_bytes = io.BytesIO(decode_base64)
+            bytes_value = image_bytes.getvalue()
+            files.append(bytes_value)
+
+        print(len(files))
 
         # Compare embedding
         user_simmilariy_status = user_embedding_validation.compareEmbedding(files)
@@ -104,7 +118,7 @@ async def registerEmbedding(
     """
 
     try:
-        # Get the UUID from the session
+        
         form = ImageForm(request)
         await form.create_oauth_form()
         files = []
@@ -116,7 +130,7 @@ async def registerEmbedding(
             bytes_value = image_bytes.getvalue()
             files.append(bytes_value)
     
-
+        # Get the UUID from the session
         uuid = request.session.get("uuid")
         user_embedding_validation = UserRegisterEmbeddingValidation(uuid)
 
