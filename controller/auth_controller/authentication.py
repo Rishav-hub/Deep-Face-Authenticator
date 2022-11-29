@@ -298,8 +298,6 @@ async def register_user(request: Request):
         validation_status = userValidation.saveUser()
 
         msg = "Registration Successful...Please Login to continue"
-        print(validation_status['msg'])
-        print(user.uuid_)
         response = RedirectResponse(url="/application/register_embedding",
          status_code=status.HTTP_302_FOUND,
          headers={"uuid": user.uuid_})

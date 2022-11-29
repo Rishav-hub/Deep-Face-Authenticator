@@ -148,6 +148,9 @@ function post(value) {
 const errorElement = document.querySelector('#error_msg');
 const codeElement = document.querySelector('#status_code');
 //console.log(codeElement.value)
+if(codeElement){
+    console.log(codeElement.value)
+}
 if(codeElement && codeElement.value == 200){
   Swal.fire({
     position: 'top-end',
@@ -157,6 +160,15 @@ if(codeElement && codeElement.value == 200){
     timer: 1500
   })
 }
+if(codeElement && codeElement.value == 401){
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorElement.value,
+        footer: '<a href="">Why do I have this issue?</a>'
+      })
+  }
+  
 
 document.getElementById('deleteImgs').addEventListener("click", deleteImages);
 //loadFromLocalStorage();

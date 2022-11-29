@@ -68,7 +68,6 @@ async def loginEmbedding(
     try:
         
         user = await get_current_user(request)
-        print(user)
         if user is None:
             return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
@@ -98,14 +97,14 @@ async def loginEmbedding(
             
         else:
             msg = "User is NOT authenticated"
-            response = templates.TemplateResponse("login_embedding.html",
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                context={"status": False, "message": msg},
+            response = templates.TemplateResponse("unauthorized.html",
+                status_code=status.HTTP_404_NOT_FOUND,
+                context={"status": False, 'status_code':status.HTTP_404_NOT_FOUND,"msg": msg},
             )
             return response
     except Exception as e:
         msg = "Error in Login Embedding in Database"
-        response = templates.TemplateResponse("error.html",
+        response = templates.TemplateResponse("unauthorized.html",
                 status_code=status.HTTP_404_NOT_FOUND,
                 context={"request": request,"status": False, "msg": msg},
             )
