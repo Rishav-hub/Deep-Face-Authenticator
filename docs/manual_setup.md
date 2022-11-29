@@ -50,27 +50,63 @@ On successfull, execution of the command, you will be able to the azure cli vers
 
 ## Setup Azure Subscriptions
 
-Before we use or access the azure resources, we need to create a subscription. On successfull login we will be able to see the azure portal from which we can create subscriptions. Navigate to subscriptions, and the click on that you will be navigated to subscriptions page, where you will see list of all subscriptions, by default there will no subscriptions with your account. 
+1. Before we use or access the azure resources, we need to create a subscription. On successfull login we will be able to see the azure portal from which we can create subscriptions. Navigate to subscriptions, and the click on that you will be navigated to subscriptions page, where you will see list of all subscriptions, by default there will no subscriptions with your account. 
+![image](https://user-images.githubusercontent.com/57321948/198298981-4abe4063-a5f7-4173-9e4b-fd48d254e724.png)
 
-In the subscriptions page you will see a add button, and then select your subscription type as pay as you go, click on select offer. On clicking that you will redirected to login page, and accept to the agreement and click on next and then verify your identity via phone, any method of verifaction is fine like text message or call option. 
+2. In the subscriptions page you will see a add button, and then select your subscription type as pay as you go, click on select offer. On clicking that you will redirected to login page, and accept to the agreement and click on next and then verify your identity via phone, any method of verifaction is fine like text message or call option. 
 
-Once the verifaction is done, add your credit card details and once the credit card details are added click on next and you will be asked for your address provide that and click on sign up. Wait for some time, you will be redirected to azure portal, and in the subscriptions category you will see that there is new subscription created. 
+3. Once the verifaction is done, add your credit card details and once the credit card details are added click on next and you will be asked for your address provide that and click on sign up. Wait for some time, you will be redirected to azure portal, and in the subscriptions category you will see that there is new subscription created. 
+
+4. All the Above procedure are private so it's not shown. If you follow the steps you will be able to do it. The Final view would be this -:
+![image](https://user-images.githubusercontent.com/57321948/198299472-03984e17-3771-4e1f-a910-c33f63bdf5bb.png)
 
 Note that everything you create in azure will be tagged to this subscription itself.
 
 ## Resource Group Creation
 
-Now that the subscriptions are created, we have to resource group where our resources will be created. To create the resource group go to the search bar and type resource groups and press enter, you will be navigated to resource groups page, by default no resource groups will be there, click on create resource group and you will be navigated to create resource group page, in there type the resource group name as "{your_project_name}rg", and then click on review + create button, once the validation is done, click on create and the resource group will be created.
+5. Now that the subscriptions are created, we have to resource group where our resources will be created. To create the resource group go to the search bar and type resource groups and press enter, you will be navigated to resource groups page, by default no resource groups will be there, click on create resource group and you will be navigated to create resource group page, in there type the resource group name as "{your_project_name}rg", and then click on review + create button, once the validation is done, click on create and the resource group will be created.
+
+![image](https://user-images.githubusercontent.com/57321948/198299831-321fe4e0-91b4-4f3f-8ccb-b5561b573971.png)
+
+![image](https://user-images.githubusercontent.com/57321948/198300549-b6deebf3-353d-4833-b2e3-31e6c1eae7c2.png)
+
+![image](https://user-images.githubusercontent.com/57321948/198300724-c362d463-d8e0-4c4e-8949-08efb6da3dcf.png)
+
+![image](https://user-images.githubusercontent.com/57321948/198300862-58f73681-b560-42a8-861e-41d49a4574d7.png)
 
 ## Creating Azure Container Registry for storing Docker images
 
 To create azure container registry, we need to have existing resource group created. Once the resource group is created we can proceed to create the resource in the resource group. In the resource group page, there will be resource group named "{your_project_name}rg", click on that and then you will be navigated to the resource group page, by default, there are no resources created in resource group.
 
+![image](https://user-images.githubusercontent.com/57321948/198310913-3bb5814e-30a1-4c02-bd90-f00e494c2df1.png)
+
+![image](https://user-images.githubusercontent.com/57321948/198311237-65fcc94a-55f3-403d-8e04-497f04018c9e.png)
+
 To create a container registry, click on create button and you will be redirected to azure marketplace there in the search bar type "container registry" and create first option where container registry is shown, click create button and you will be redirected to create container registry page, in that give the registry name as "{your_project_name}acr", leave other options as default and click on review and create button and after the validation is completed, click on create button and container registry resource will start getting created. Once the container registry is created, click on the go to resource and you will redirected to container registry page. During deployment we need the REGISTRY_USERNAME and REGISTRY_PASSWORD, for authentication purposes. 
+
+![image](https://user-images.githubusercontent.com/57321948/198311458-ef023bed-0501-426d-9ee2-9adefb853cb6.png)
+
+<img width="751" alt="image" src="https://user-images.githubusercontent.com/57321948/198834037-0952693f-ace3-4a29-a9cd-5afaf804e0d4.png">
+<img width="745" alt="image" src="https://user-images.githubusercontent.com/57321948/198834083-8bee6f45-9438-4505-b4f1-f657cdc9054f.png">
+<img width="541" alt="image" src="https://user-images.githubusercontent.com/57321948/198834183-a2cbebc2-d961-481f-84f6-7ca48277d801.png">
+<img width="488" alt="image" src="https://user-images.githubusercontent.com/57321948/198834236-0e46ba28-fc6f-44d6-93a8-af295a8812f0.png">
+<img width="717" alt="image" src="https://user-images.githubusercontent.com/57321948/198834302-505a6323-7c14-4d77-835d-5f35a0d4384f.png">
+<img width="480" alt="image" src="https://user-images.githubusercontent.com/57321948/198834352-4b3e24e8-67d7-40b6-8575-da2f9f5df970.png">
+<img width="728" alt="image" src="https://user-images.githubusercontent.com/57321948/198834392-e58ab3a1-fad2-4de0-b759-4bea5d86975b.png">
+<img width="308" alt="image" src="https://user-images.githubusercontent.com/57321948/198834474-4467b3a9-b719-4b46-9295-cdc0aacf3e58.png">
+
+
 
 In order to get these credentials, in the container registry page, you will see that in the settings tab column there is a option of access keys, for getting the REGISTRY_PASSWORD and REGISTRY_USERNAME, enable the admin user option and you will be able to username, password and password2. For REGISTRY_USERNAME use the username, and REGISTRY_PASSWORD use any of password and password2. 
 
+<img width="425" alt="image" src="https://user-images.githubusercontent.com/57321948/198865156-30492b40-ecd6-4ef3-becd-ae36b8b4939d.png">
+
+
 Store these credentials in github secrets. If we see the deployment workflow, there is secret name AZURE_LOGIN_SERVER which is login server present in the access key page. One more secret is REPO_NAME use {your_project_name}. 
+
+<img width="751" alt="image" src="https://user-images.githubusercontent.com/57321948/198865170-9bdc1eb8-3fd8-42eb-8059-eb2f7dc700e4.png">
+<img width="534" alt="image" src="https://user-images.githubusercontent.com/57321948/198865205-953334bc-c008-4a40-9e92-8e7c11c24dbf.png">
+
 
 ## Creating Azure Web App Service
 
