@@ -2,7 +2,7 @@ name: Deploy Application Docker Image to Azure Web App Service
 
 on:
   push:
-    branches:
+    branches: 
       - main
     paths-ignore:
       - "README.md"
