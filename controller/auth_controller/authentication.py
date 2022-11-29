@@ -298,12 +298,14 @@ async def register_user(request: Request):
         validation_status = userValidation.saveUser()
 
         msg = "Registration Successful...Please Login to continue"
-        response = RedirectResponse("/application/register_embedding",
-            status_code=status.HTTP_302_FOUND,
-            content={"request": request,"status": True, "message": validation_status["msg"]},
-            headers={"uuid": user.uuid_},
-        )
+        print(validation_status['msg'])
+        print(user.uuid_)
+        response = RedirectResponse(url="/application/register_embedding",
+         status_code=status.HTTP_302_FOUND,
+         headers={"uuid": user.uuid_})
         return response
+        
+        
     except Exception as e:
         response = templates.TemplateResponse("error.html",
                 status_code=status.HTTP_404_NOT_FOUND,

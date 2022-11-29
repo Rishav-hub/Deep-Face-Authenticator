@@ -49,7 +49,7 @@ function displayNumberOfImgs() {
             document.getElementById('snapDiv').style.display = 'none';
             document.getElementById("embeddingsBtn").style.display = "block";
             Swal.fire({
-                title: '<strong>Only 3 snaps allowed</strong>',
+                title: '<strong>Only 8 snaps allowed</strong>',
                 icon: 'info',
                 showCloseButton: true,
                 showCancelButton: true,
@@ -75,7 +75,7 @@ function checkImages(array) {
         return FALSE;
     }
     //If it is an array, check its length property
-    if (array.length == 3) {
+    if (array.length == 8) {
         //Return TRUE if the array is empty
         return true;
     }
@@ -85,6 +85,7 @@ function checkImages(array) {
 
 function deleteImages() {
     imagesObject = [];
+    console.log("remove")
     localStorage.removeItem("images");
     displayNumberOfImgs()
     document.getElementById('list').innerHTML = "";
@@ -106,7 +107,7 @@ function loadFromLocalStorage() {
 
 function post(value) {
 
-    
+    console.log(value)
     Swal.fire({
         imageUrl: 'https://i.gifer.com/DzUh.gif',
         imageWidth: 400,
@@ -146,8 +147,8 @@ function post(value) {
 }
 const errorElement = document.querySelector('#error_msg');
 const codeElement = document.querySelector('#status_code');
-/*console.log(codeElement.value)
-if(codeElement.value == 200){
+//console.log(codeElement.value)
+if(codeElement && codeElement.value == 200){
   Swal.fire({
     position: 'top-end',
     icon: 'success',
@@ -155,7 +156,7 @@ if(codeElement.value == 200){
     showConfirmButton: false,
     timer: 1500
   })
-}*/
+}
 
 document.getElementById('deleteImgs').addEventListener("click", deleteImages);
 //loadFromLocalStorage();

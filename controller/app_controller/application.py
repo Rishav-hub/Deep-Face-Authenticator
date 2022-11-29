@@ -27,17 +27,29 @@ class ImageForm:
         self.image1: Optional[str] = None
         self.image2: Optional[str] = None
         self.image3: Optional[str] = None
-    
+        self.image4: Optional[str] = None
+        self.image5: Optional[str] = None
+        self.image6: Optional[str] = None
+        self.image7: Optional[str] = None
+        self.image8: Optional[str] = None
+
     async def create_oauth_form(self):
         form = await self.request.form()
         self.image1 = form.get("image1")
         self.image2 = form.get("image2")
         self.image3 = form.get("image3")
-     
+        self.image4 = form.get("image4")
+        self.image5 = form.get("image5")
+        self.image6 = form.get("image6")
+        self.image7 = form.get("image7")
+        self.image8 = form.get("image8")
+
 
 @router.get("/", response_class=HTMLResponse)
 async def application(request: Request):
-    return templates.TemplateResponse("login_embedding.html", {"request": request})
+    return templates.TemplateResponse("login_embedding.html", context={"request": request,"status_code":status.HTTP_200_OK,"msg":"Logged in Successfully" })
+     
+
 
 @router.post("/")
 async def loginEmbedding(
@@ -65,7 +77,7 @@ async def loginEmbedding(
         form = ImageForm(request)
         await form.create_oauth_form()
         files = []
-        base64_images = [form.image1,form.image2,form.image3]
+        base64_images = [form.image1,form.image2,form.image3,form.image4,form.image5,form.image6,form.image7,form.image8]
         for image in base64_images:
             strip_metadata = image[image.find(",")+1:]
             decode_base64 = base64.b64decode(strip_metadata)
@@ -73,22 +85,22 @@ async def loginEmbedding(
             bytes_value = image_bytes.getvalue()
             files.append(bytes_value)
 
-        print(len(files))
-
         # Compare embedding
         user_simmilariy_status = user_embedding_validation.compareEmbedding(files)
 
         if user_simmilariy_status:
             msg = "User is authenticated"
-            response = JSONResponse(
-                status_code=status.HTTP_200_OK, content={"status": True, "message": msg}
+            response = templates.TemplateResponse("login_embedding.html",
+                status_code=status.HTTP_200_OK,
+                context={"request": request,"status_code":status.HTTP_200_OK, "msg": msg},
             )
             return response
+            
         else:
             msg = "User is NOT authenticated"
-            response = JSONResponse(
+            response = templates.TemplateResponse("login_embedding.html",
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"status": False, "message": msg},
+                context={"status": False, "message": msg},
             )
             return response
     except Exception as e:
@@ -116,13 +128,12 @@ async def registerEmbedding(
     Returns:
         Response: If user is registered then it returns the response
     """
-
     try:
         
         form = ImageForm(request)
         await form.create_oauth_form()
         files = []
-        base64_images = [form.image1,form.image2,form.image3]
+        base64_images = [form.image1,form.image2,form.image3,form.image4,form.image5,form.image6,form.image7,form.image8]
         for image in base64_images:
             strip_metadata = image[image.find(",")+1:]
             decode_base64 = base64.b64decode(strip_metadata)
@@ -138,12 +149,13 @@ async def registerEmbedding(
         user_embedding_validation.saveEmbedding(files)
 
         msg = "Embedding Stored Successfully in Database"
-        response = JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content={"status": True, "message": msg},
-            headers={"uuid": uuid},
-        )
+
+        response = templates.TemplateResponse("login.html",
+                status_code=status.HTTP_200_OK,
+                context={"request": request,"status": False, "msg": msg},
+            )
         return response
+
     except Exception as e:
         msg = "Error in Storing Embedding in Database"
         response = templates.TemplateResponse("error.html",
