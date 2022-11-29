@@ -27,7 +27,7 @@ jobs:
       - name: Build and Push Application Image to Azure Container Registry
         id: docker-push
         run: |
-          docker build --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} --build-arg ALGORITHM=${{ secrets.ALGORITHM }} --build-arg ATLAS_CLUSTER_USERNAME=${{ secrets.ATLAS_CLUSTER_USERNAME }} --build-arg ATLAS_CLUSTER_PASSWORD=${{ secrets.ATLAS_CLUSTER_PASSWORD }} --build-arg DATABASE_NAME=${{ secrets.DATABASE_NAME }} --build-arg USER_COLLECTION_NAME=${{ secrets.USER_COLLECTION_NAME }} --build-arg EMBEDDING_COLLECTION_NAME=${{ secrets.EMBEDDING_COLLECTION_NAME }} -t ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }} .
+          docker build --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} --build-arg ALGORITHM=${{ secrets.ALGORITHM }} --build-arg MONGODB_URL_KEY=${{ secrets.MONGODB_URL_KEY }} --build-arg DATABASE_NAME=${{ secrets.DATABASE_NAME }} --build-arg USER_COLLECTION_NAME=${{ secrets.USER_COLLECTION_NAME }} --build-arg EMBEDDING_COLLECTION_NAME=${{ secrets.EMBEDDING_COLLECTION_NAME }} -t ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }} .
 
           docker push ${{ secrets.AZURE_LOGIN_SERVER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
 
