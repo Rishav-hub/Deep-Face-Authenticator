@@ -1,9 +1,8 @@
 import pymongo
 
 from face_auth.constant.database_constants import (
-    ATLAS_CLUSTER_PASSWORD,
-    ATLAS_CLUSTER_USERNAME,
     DATABASE_NAME,
+    MONGODB_URL_KEY
 )
 
 
@@ -12,9 +11,11 @@ class MongodbClient:
 
     def __init__(self, database_name=DATABASE_NAME) -> None:
         if MongodbClient.client is None:
-            MongodbClient.client = pymongo.MongoClient(
-                f"mongodb+srv://{ATLAS_CLUSTER_USERNAME}:{ATLAS_CLUSTER_PASSWORD}@cluster0.tbafllp.mongodb.net/{database_name}?retryWrites=true&w=majority"
-            )
+            mongo_db_url = MONGODB_URL_KEY
+            if "localhost" in mongo_db_url:
+                MongodbClient.client = pymongo.MongoClient(mongo_db_url) 
+            else:
+                MongodbClient.client=pymongo.MongoClient(mongo_db_url)
         self.client = MongodbClient.client
         self.database = self.client[database_name]
         self.database_name = database_name
