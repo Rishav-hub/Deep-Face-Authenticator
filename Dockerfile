@@ -1,8 +1,8 @@
 FROM python:3.8-slim-bullseye
 
-COPY . /app
-
 WORKDIR /app
+
+COPY . /app
 
 ARG SECRET_KEY
 
