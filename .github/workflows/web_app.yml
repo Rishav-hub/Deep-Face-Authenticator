@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Login to Azure Container Registry
+      - name: Login to Azure Container Registry 
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.AZURE_LOGIN_SERVER }}
