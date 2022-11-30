@@ -47,9 +47,20 @@ class ImageForm:
 
 @router.get("/", response_class=HTMLResponse)
 async def application(request: Request):
-    return templates.TemplateResponse("login_embedding.html", context={"request": request,"status_code":status.HTTP_200_OK,"msg":"Logged in Successfully" })
-     
+    try:
+        
+        user = await get_current_user(request)
+        if user is None:
+            return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
+        return templates.TemplateResponse("login_embedding.html", context={"request": request,"status_code":status.HTTP_200_OK,"msg":"Logged in Successfully" })
 
+    except Exception as e:
+        msg = "Error in Login Embedding in Database"
+        response = templates.TemplateResponse("error.html",
+                status_code=status.HTTP_404_NOT_FOUND,
+                context={"request": request,"status": False, "msg": msg},
+            )
+        return response 
 
 @router.post("/")
 async def loginEmbedding(
@@ -112,7 +123,18 @@ async def loginEmbedding(
 
 @router.get("/register_embedding", response_class=HTMLResponse)
 async def application(request: Request):
-    return templates.TemplateResponse("register_embedding.html", {"request": request})
+    try:        
+        uuid = request.session.get("uuid")
+        if uuid is None:
+            return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
+        return templates.TemplateResponse("register_embedding.html", context={"request": request,"status_code":status.HTTP_200_OK,"msg":"Logged in Successfully" })
+    except Exception as e:
+        msg = "Error in Login Embedding in Database"
+        response = templates.TemplateResponse("error.html",
+                status_code=status.HTTP_404_NOT_FOUND,
+                context={"request": request,"status": False, "msg": msg},
+            )
+        return response
 
 @router.post("/register_embedding")
 async def registerEmbedding(
@@ -128,6 +150,9 @@ async def registerEmbedding(
         Response: If user is registered then it returns the response
     """
     try:
+        uuid = request.session.get("uuid")
+        if uuid is None:
+            return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
         
         form = ImageForm(request)
         await form.create_oauth_form()
@@ -141,7 +166,6 @@ async def registerEmbedding(
             files.append(bytes_value)
     
         # Get the UUID from the session
-        uuid = request.session.get("uuid")
         user_embedding_validation = UserRegisterEmbeddingValidation(uuid)
 
         # Save the embeddings
