@@ -30,8 +30,13 @@
             <div class="col-md-4 static">
                <div class="profile-card">
                   <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo">
-                  <h5><a href="#" class="text-white">Hello, John Doe</a></h5>
+                  {% if user %}
+                  <h5><a href="#" class="text-white">Hello, {{user}}</a></h5>
                   <a href="#" class="text-white"><i class="fa fa-user"></i> Welcome!! </a>
+                  {% else %}
+                  <h5><a href="#" class="text-white">Hello, User</a></h5>
+                  <a href="#" class="text-white"><i class="fa fa-user"></i> Please Login </a>
+                  {% endif %}
                </div>
                <!--profile card ends-->
                <ul class="nav-news-feed">
