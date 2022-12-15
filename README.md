@@ -1,4 +1,5 @@
 # Face Authentication System
+![Pink Blue Geometric Technology LinkedIn Banner](https://user-images.githubusercontent.com/57321948/207820780-2839c955-8534-4744-8adf-8b4f23b5d393.png)
 
 This is a modern Face Authentication System which includes state-of-art algorithms to detect face and generate face embedding. This system contains endpoints which can be integrated to any device depending on the requirements. 
 
