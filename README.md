@@ -6,6 +6,9 @@ This is a modern Face Authentication System which includes state-of-art algorith
 ## Project Architecture
 <img width="844" alt="image" src="https://user-images.githubusercontent.com/57321948/195135349-9888d9ea-af5d-4ee2-8aa4-1e57342add05.png">
 
+<img width="716" alt="image" src="https://user-images.githubusercontent.com/57321948/209801055-d2b2b882-b6a3-45ec-80e4-d794b021200b.png">
+
+
 ## Run the Application
 Before we run the project, make sure that you are having MongoDB in your local system, with Compass since we are using MongoDB for data storage. You also need Azure account to access the service like ACS and App services.
 
