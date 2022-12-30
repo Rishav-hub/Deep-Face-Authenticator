@@ -3,7 +3,7 @@
 This is a modern Face Authentication System which includes state-of-art algorithms to detect face and generate face embedding. This system contains endpoints which can be integrated to any device depending on the requirements. 
 
 ## Project Architecture
-<img width="894" alt="image" src="https://user-images.githubusercontent.com/57321948/209937143-28141aea-35be-43bb-89ac-984f2baa0120.png">
+<img width="773" alt="image" src="https://user-images.githubusercontent.com/57321948/210045920-cc545886-1053-44f2-a491-e2ce8a3d18ce.png">
 
 <img width="716" alt="image" src="https://user-images.githubusercontent.com/57321948/209801055-d2b2b882-b6a3-45ec-80e4-d794b021200b.png">
 
